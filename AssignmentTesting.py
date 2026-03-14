@@ -2,6 +2,29 @@ import os
 import math
 import time
 
+FILENAME="location.txt"
+default_routes=[["KLCC","Bangsar Shopping mall","6.5"],\
+["UTAR-SL","Mid Valley","25.6"],["UTAR-SL","Sunway Pyramid","30"],["TARUMT","Pavillion","15.2"],["UTAR-SL","Sunway Velocity","20"]]
+
+def initialize_file():
+    if not os.path.exists(FILENAME):
+        with open(FILENAME,"w") as f:
+            for route in default_routes:
+                f.write("|".join(route)+"\n")
+def load_matrix():
+    matrix=[]
+    if os.path.exists(FILENAME):
+        with open(FILENAME,"r")as f:
+            for line in f:
+                if line.strip():
+                    matrix.append(line.strip().split("|"))
+    return matrix
+initialize_file()
+location_matirx=load_matrix()
+for row in location_matirx:
+    print (row)
+    
+
 def clear_screen():
     if os.name=='nt':
         os.system('cls')
