@@ -39,7 +39,6 @@ def clear_screen():
 def add_new_place():
     print("\n"+'='*20)
     print("ADMIN: ADD PLACE")
-    print("Press 1 to EXIT")
     print("="*20)
     loc_from=input("Enter 'From' Location:")
     loc_to=input("Enter 'To' Location:")
@@ -55,6 +54,7 @@ def admin_management():
         clear_screen()
         print("--- ADMIN MANAGEMENT ---")
         print("1. View Current Routes")
+        print("2. Add New Places")
         print("3. Return to Main Menu")
 
         choice = input("\nPlease choose 1-3 >> ")
