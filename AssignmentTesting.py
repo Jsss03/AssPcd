@@ -37,12 +37,43 @@ def clear_screen():
         os.system('clear')
 
 def add_new_place():
-    print("\n"+'='*20)
-    print("ADMIN: ADD PLACE")
-    print("="*20)
-    loc_from=input("Enter 'From' Location:")
-    loc_to=input("Enter 'To' Location:")
-    loc_distance=input("Enter Distance (km):")
+    step=1
+    loc_from=""
+    loc_to=""
+    distance=""
+
+    while step<=3:
+        clear_screen()
+        print("\n"+'='*20)
+        print("ADMIN: ADD PLACE")
+        print("="*20)
+        print("(q:Quit | b: Back to previous)")
+        print("="*20)
+
+        if step==1:
+            loc_from=input("Enter 'From' Location:")
+            if loc_from.lower()=='q' or loc_from.lower()=='b': return
+            step=2
+
+        elif step==2:
+            print(f"From: {loc_from}")
+            loc_to=input("Enter 'To' Location:")
+            if loc_to.lower()=='q':return
+            if loc_to.lower()=='b':
+                step=1
+                continue
+            step=3
+
+        elif step==3:
+            print(f"From: {loc_from}")
+            print(f"To: {loc_to}")
+            loc_distance=input("Enter Distance (km):")
+            if loc_distance.lower()=='q':return
+            if loc_distance.lower()=='b':
+                step=2
+                continue
+            step=4
+
     new_entry=f"{loc_from}|{loc_to}|{loc_distance}\n"
     with open(FILENAME,"a")as f:
         f.write(new_entry)
@@ -69,9 +100,6 @@ def admin_management():
             add_new_place()
  
         elif choice == '3':
-            clear_screen()
-            running = False
-            
             break
 
 def boot_sequence():
