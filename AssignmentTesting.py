@@ -28,7 +28,6 @@ def load_matrix():
 
 sync_defaults()
 location_matirx=load_matrix()
-for row in location_matirx:
     
 
 def clear_screen():
