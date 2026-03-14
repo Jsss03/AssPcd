@@ -55,7 +55,6 @@ def admin_management():
         clear_screen()
         print("--- ADMIN MANAGEMENT ---")
         print("1. View Current Routes")
-        print("2. Add New Route")
         print("3. Return to Main Menu")
 
         choice = input("\nPlease choose 1-3 >> ")
