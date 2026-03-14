@@ -113,7 +113,7 @@ def boot_sequence():
 
 def wave_menu():
     title = "MAIN MENU"
-    options = ["1.Admin", "2.Estimate", "3.Exit"]
+    options = ["1.Admin", "2.Estimate", "3.Help Centre","Exit"]
     
     # 1. Display the Title (Stationary)
     print(f"\n{'='*60}")
@@ -130,6 +130,40 @@ def wave_menu():
         print(f"{indent}◈ {opt}")
     print("")
     print(f"{'='*60}\n")
+
+def ai_customer_service():
+    brain = {
+        "price": "Our travel costs are calculated based on distance. Walking is free!",
+        "weather": "Rain increases travel time by 50% for safety.",
+        "traffic": "Traffic is generated randomly to simulate real-world delays.",
+        "hello": "Hi there! I am your AI assistant. How can I help you?",
+        "student": "Welcome UTAR student! Good luck with your assignment!"
+    }
+
+    print("\n" + "="*50)
+    print("        🤖 AI TRAVEL ASSISTANT")
+    print("    (Type 'b' to go BACK to Main Menu)")
+    print("="*50)
+
+    while True:
+        user_query = input("\n[AI Chat] Ask me anything >> ").lower()
+
+        # GO BACK LOGIC
+        if user_query == 'b' or user_query == 'back' or user_query == 'exit':
+            print("\n[AI]: Returning to Main Menu...")
+            time.sleep(1)
+            break # This exits the while loop and goes back to your menu
+
+        found_match = False
+        for keyword in brain:
+            if keyword in user_query:
+                print(f"\n[AI]: {brain[keyword]}")
+                found_match = True
+                break 
+
+        if not found_match:
+            print("\n[AI]: I'm not sure about that. Try asking about 'price' or 'weather'.")
+            
 def main_menu():
     running=True
     has_booted=False
@@ -151,6 +185,9 @@ def main_menu():
             input("Press Enter to continue...")
             clear_screen()
         elif choice=='3':
+            clear_screen()
+            ai_customer_service()
+        elif choice=='4':
             clear_screen()
             print("Exiting...")
             running=False
