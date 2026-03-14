@@ -134,8 +134,14 @@ def wave_menu():
 def ai_customer_service():
     brain = {"price": "Our travel costs are calculated based on distance. Walking is free!",\
         "weather": "Rain increases travel time by 50% for safety.",\
+        "time": "Travel time = (Distance / Speed) multiplied by traffic and weather factors.",\
+        "cost": "Travel cost depends on your transport mode. We aim to keep it affordable for students!",\
+        "rain": "Our system detects rainy weather and adjusts the estimated time automatically.",\
         "traffic": "Traffic is generated randomly to simulate real-world delays.",\
         "hello": "Hi there! I am your AI assistant. How can I help you?",\
+        "hi": "Hello! Ask me anything about price, weather, or traffic.",\
+        "location": "You can add custom locations in the Admin Management menu!",\
+        "fast": "The Car is the fastest mode, but 'Evening Peak' traffic can slow you down significantly.",\
         "student": "Welcome UTAR student! Good luck with your assignment!"}
 
     print("\n" + "="*50)
