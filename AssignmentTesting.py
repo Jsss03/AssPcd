@@ -70,6 +70,7 @@ def admin_management():
  
         elif choice == '3':
             clear_screen()
+            running = False
             
             break
 
