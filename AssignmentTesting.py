@@ -113,7 +113,7 @@ def boot_sequence():
 
 def wave_menu():
     title = "MAIN MENU"
-    options = ["1.Admin", "2.Estimate", "3.Help Centre","Exit"]
+    options = ["1.Admin", "2.Estimate", "3.Help Centre","4.Exit"]
     
     # 1. Display the Title (Stationary)
     print(f"\n{'='*60}")
@@ -182,7 +182,7 @@ def main_menu():
             clear_screen()
             has_booted = True 
         wave_menu()
-        choice=input("Please choose(1-3)>>")
+        choice=input("Please choose(1-4)>>")
         if choice=='1':
             clear_screen()
             admin_management()
