@@ -132,13 +132,11 @@ def wave_menu():
     print(f"{'='*60}\n")
 
 def ai_customer_service():
-    brain = {
-        "price": "Our travel costs are calculated based on distance. Walking is free!",
-        "weather": "Rain increases travel time by 50% for safety.",
-        "traffic": "Traffic is generated randomly to simulate real-world delays.",
-        "hello": "Hi there! I am your AI assistant. How can I help you?",
-        "student": "Welcome UTAR student! Good luck with your assignment!"
-    }
+    brain = {"price": "Our travel costs are calculated based on distance. Walking is free!",\
+        "weather": "Rain increases travel time by 50% for safety.",\
+        "traffic": "Traffic is generated randomly to simulate real-world delays.",\
+        "hello": "Hi there! I am your AI assistant. How can I help you?",\
+        "student": "Welcome UTAR student! Good luck with your assignment!"}
 
     print("\n" + "="*50)
     print("        🤖 AI TRAVEL ASSISTANT")
@@ -149,6 +147,9 @@ def ai_customer_service():
         user_query = input("\n[AI Chat] Ask me anything >> ").lower()
 
         # GO BACK LOGIC
+        if "bye" in user_query or "thank you" in user_query or "thanks" in user_query or "tq" in user_query or "ok" in user_query:
+            print("\n[AI]: It was a pleasure helping you. Safe travels!")
+            break
         if user_query == 'b' or user_query == 'back' or user_query == 'exit':
             print("\n[AI]: Returning to Main Menu...")
             time.sleep(1)
@@ -162,7 +163,7 @@ def ai_customer_service():
                 break 
 
         if not found_match:
-            print("\n[AI]: I'm not sure about that. Try asking about 'price' or 'weather'.")
+            print("\n[AI]: I'm not sure about that. Try asking about 'Price', 'Weather', 'Traffic', or 'Time'..")
             
 def main_menu():
     running=True
