@@ -1,13 +1,16 @@
 # Displaying weather and time (real time)
 
-import datetime, subprocess
+import datetime, subprocess, os
 
-# Function to get weather (using wttr.in service)
 def getWeather():
     try:
+        # wttr.in gives simple weather info
         return subprocess.getoutput("curl -s wttr.in/?format=3")
     except:
         return "Weather unavailable"
+
+# Clear screen depending on OS
+os.system("cls" if os.name == "nt" else "clear")
 
 # Get current time
 now = datetime.datetime.now()
