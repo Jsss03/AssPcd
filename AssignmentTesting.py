@@ -220,8 +220,9 @@ def main_menu():
             admin_management()
         elif choice=='2':
             clear_screen()
-            print("Function2")
-            input("Press Enter to continue...")
+            adjusted_speed=float(calculate_adjusted_speed())
+            print(adjusted_speed)
+            input("Press any to continue.")
             clear_screen()
         elif choice=='3':
             clear_screen()
