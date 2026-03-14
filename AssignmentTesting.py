@@ -69,6 +69,7 @@ def admin_management():
             add_new_place()
  
         elif choice == '3':
+            clear_screen()
             break
 
 def boot_sequence():
