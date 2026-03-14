@@ -36,20 +36,40 @@ def clear_screen():
     else:
         os.system('clear')
 
-def function1():
+def add_new_place():
+    print("\n"+'='*20)
+    print("ADMIN: ADD PLACE")
+    print("Press 1 to EXIT")
+    print("="*20)
+    loc_from=input("Enter 'From' Location:")
+    loc_to=input("Enter 'To' Location:")
+    loc_distance=input("Enter Distance (km):")
+    new_entry=f"{loc_from}|{loc_to}|{loc_distance}\n"
+    with open(FILENAME,"a")as f:
+        f.write(new_entry)
+    print("\n--- Data succesfully saved to "+ FILENAME+"---")
+    
+def admin_management():
+    """GROUP A: Logic for managing locations (CRUD) """
     while True:
         clear_screen()
-        print("1.Run this function")
-        print("2.Exit to main menu")
+        print("--- ADMIN MANAGEMENT ---")
+        print("1. View Current Routes")
+        print("2. Add New Route")
+        print("3. Return to Main Menu")
 
-        sub_choice=input("Please choose 1-2 >> ")
-        if sub_choice=='1':
-            print("Run successfully!")
-            input("Press ANY to proceed.")
-            clear_screen()
-            break
-        elif sub_choice=='2':
-            clear_screen()
+        choice = input("\nPlease choose 1-3 >> ")
+        if choice == '1':
+            matrix = load_matrix()
+            print(f"\n{'Start':<15} | {'Destination':<25} | {'Dist (KM)'}")
+            print("-" * 55)
+            for row in matrix:
+                print(f"{row[0]:<15} | {row[1]:<25} | {row[2]}")
+            input("\nPress Enter to continue...")
+        elif choice == '2':
+            add_new_place()
+ 
+        elif choice == '3':
             break
 
 def boot_sequence():
@@ -94,7 +114,7 @@ def main_menu():
         choice=input("Please choose(1-3)>>")
         if choice=='1':
             clear_screen()
-            function1()
+            admin_management()
         elif choice=='2':
             clear_screen()
             print("Function2")
