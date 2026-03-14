@@ -51,13 +51,13 @@ def add_new_place():
         print("="*20)
 
         if step==1:
-            loc_from=input("Enter 'From' Location:")
+            loc_from=input("Enter 'From' Location: ")
             if loc_from.lower()=='q' or loc_from.lower()=='b': return
             step=2
 
         elif step==2:
             print(f"From: {loc_from}")
-            loc_to=input("Enter 'To' Location:")
+            loc_to=input("Enter 'To' Location: ")
             if loc_to.lower()=='q':return
             if loc_to.lower()=='b':
                 step=1
@@ -67,7 +67,7 @@ def add_new_place():
         elif step==3:
             print(f"From: {loc_from}")
             print(f"To: {loc_to}")
-            loc_distance=input("Enter Distance (km):")
+            loc_distance=input("Enter Distance (km): ")
             if loc_distance.lower()=='q':return
             if loc_distance.lower()=='b':
                 step=2
