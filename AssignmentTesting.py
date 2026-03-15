@@ -78,6 +78,41 @@ def add_new_place():
     with open(FILENAME,"a")as f:
         f.write(new_entry)
     print("\n--- Data succesfully saved to "+ FILENAME+"---")
+
+def remove_location():
+    matrix = load_matrix()
+    
+    if not matrix:
+        print("No routes to delete.")
+        return
+
+    print("\n--- REMOVE ROUTE ---")
+    for i, row in enumerate(matrix):
+        print(f"{i+1}. {row[0]} to {row[1]}")
+
+    choice = input("\nSelect number to delete (or 'q' to cancel): ")
+    
+    if choice.lower() == 'q':
+        return
+
+    try:
+        idx = int(choice) - 1
+        if 0 <= idx < len(matrix):
+            # Remove from the list
+            removed = matrix.pop(idx)
+            
+            # OVERWRITE the file with the new list (using "w")
+            with open(FILENAME, "w") as f:
+                for row in matrix:
+                    f.write("|".join(row) + "\n")
+            
+            print(f"Successfully deleted: {removed[0]} to {removed[1]}")
+        else:
+            print("Invalid number.")
+    except:
+        print("Please enter a valid number.")
+    
+    time.sleep(1)
     
 def admin_management():
     """GROUP A: Logic for managing locations (CRUD) """
@@ -86,9 +121,10 @@ def admin_management():
         print("--- ADMIN MANAGEMENT ---")
         print("1. View Current Routes")
         print("2. Add New Places")
-        print("3. Return to Main Menu")
+        print("3. Remove Existing Places")
+        print("4. Return to Main Menu")
 
-        choice = input("\nPlease choose 1-3 >> ")
+        choice = input("\nPlease choose 1-4 >> ")
         if choice == '1':
             matrix = load_matrix()
             print(f"\n{'Start':<15} | {'Destination':<25} | {'Dist (KM)'}")
@@ -98,8 +134,10 @@ def admin_management():
             input("\nPress Enter to continue...")
         elif choice == '2':
             add_new_place()
+        elif choice =='3':
+            remove_location()
  
-        elif choice == '3':
+        elif choice == '4':
             clear_screen()
             break
 
