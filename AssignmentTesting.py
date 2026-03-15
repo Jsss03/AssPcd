@@ -11,11 +11,11 @@ def sync_defaults():
     if os.path.exists(FILENAME):
         with open (FILENAME,"r") as f:
             existing_lines=[line.strip() for line in f if line.strip()]
-            with open(FILENAME,"a") as f:
-                for route in default_routes:
-                    route_str="|".join(route)
-                    if route_str not in existing_lines:
-                        f.write(route_str + "\n")
+    with open(FILENAME,"a") as f:
+        for route in default_routes:
+            route_str="|".join(route)
+            if route_str not in existing_lines:
+                f.write(route_str + "\n")
 
 def load_matrix():
     matrix=[]
