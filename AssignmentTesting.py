@@ -124,7 +124,8 @@ def wave_menu():
     for i, opt in enumerate(options):
         # The Logic:
         # Base offset of 5 spaces + a sine curve that moves up to 4 spaces
-        indent_size = int(5 + 4 * math.sin(i * 1.5))
+        '''indent_size = int(5 + 4 * math.sin(i * 1.5))'''
+        indent_size = 2 if i%2==0 else 5
         
         indent = " " * indent_size
         print(f"{indent}◈ {opt}")
