@@ -174,15 +174,17 @@ def ai_customer_service():
         "hi": "Hi there! I am your AI assistant. How can I help you?",\
         "hello": "Hello! Ask me anything about price, weather, or traffic.",\
         "location": "You can add custom locations in the Admin Management menu!",\
-        "student": "Welcome UTAR student! Good luck with your assignment!"}
+        "about you": "I'm created by UTAR's Students-Chin Jia Wei,Chen Hui Yang,Goh Jin Seng,How Han Bin, Law Wei Jun and Lee Yu Ze!"}
 
     print("\n" + "="*50)
     print("        🤖 AI TRAVEL ASSISTANT")
     print("    (Type 'b' to go BACK to Main Menu)")
     print("="*50)
+    print("\n[AI]:Hi there! I am your AI assistant. How can I help you?")
+
 
     while True:
-        user_query = input("\n[AI Chat] Ask me anything >> ").lower()
+        user_query = input("\n[YOU] >> ").lower()
 
         # GO BACK LOGIC
         if "bye" in user_query or "thank you" in user_query or "thanks" in user_query or "tq" in user_query or "ok" in user_query:
@@ -190,7 +192,8 @@ def ai_customer_service():
             break
         if user_query == 'b' or user_query == 'back' or user_query == 'exit':
             print("\n[AI]: Returning to Main Menu...")
-            time.sleep(1)
+            time.sleep(0.5)
+            clear_screen()
             break # This exits the while loop and goes back to your menu
 
         found_match = False
