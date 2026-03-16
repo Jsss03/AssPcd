@@ -1,0 +1,26 @@
+from datetime import datetime
+
+# Get current system time
+now = datetime.now()
+
+# Format it nicely: Day, Month Date, Year, Time
+print("Current Date/Time:", now.strftime("%A, %B %d, %Y %H:%M %p"))
+
+import urllib.request
+
+import urllib.request
+
+def get_weather_info(city):
+    try:
+        # %C = Weather Condition (e.g., Sunny)
+        # %t = Temperature (e.g., +30°C)
+        url = f"https://wttr.in/{city}?format=%C+%t"
+        
+        with urllib.request.urlopen(url) as response:
+            data = response.read().decode('utf-8')
+            print(f"Current Condition: {data}")
+            
+    except Exception:
+        print("Weather: [Status Offline]")
+
+get_weather_info("Kajang")
