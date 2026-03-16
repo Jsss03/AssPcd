@@ -65,6 +65,17 @@ def add_new_place():
             if loc_to.lower() == 'b':
                 step = 1
                 continue
+            matrix=load_matrix()
+            is_duplicate = False
+            for row in matrix:
+                if row[0].lower()==loc_from.lower() and row[1].lower()==loc_to.lower():
+                    is_duplicate= True
+                    break
+            if is_duplicate:
+                print(f"!!Error:The route{loc_from} to {loc_to} already exists!")
+                time.sleep(2)
+                step=1
+                continue
             step = 3
 
         elif step == 3:
@@ -76,7 +87,11 @@ def add_new_place():
             if loc_distance.lower() == 'b':
                 step = 2
                 continue
-            step = 4
+            try:
+                float(loc_distance)
+                step=4
+            except:
+                input("Opps Error!Please Try Again!")
 
     new_entry = f"{loc_from}|{loc_to}|{loc_distance}\n"
     with open(FILENAME, "a")as f:
