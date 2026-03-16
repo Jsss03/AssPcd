@@ -46,9 +46,9 @@ def add_new_place():
     loc_to = ""
     distance = ""
 
-    while step <= 3:
+    while step <= 4:
         clear_screen()
-        print("---ADD PLACE---")
+        print("---ADD LOCATION---")
         print("(<q>uit | <b>ack)")
 
         if step == 1:
@@ -92,6 +92,13 @@ def add_new_place():
                 step=4
             except:
                 input("Opps Error!Please Try Again!")
+        elif step==4:
+            print(f"From: {loc_from}")
+            print(f"To: {loc_to}")
+            print(f"Distance:{loc_distance}")
+            input("Press Enter to confirm location")
+            step=5
+            
 
     new_entry = f"{loc_from}|{loc_to}|{loc_distance}\n"
     with open(FILENAME, "a")as f:
@@ -339,3 +346,4 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
+
