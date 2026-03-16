@@ -172,11 +172,7 @@ def wave_menu():
 
     # 2. Display the Waving Options
     for i, opt in enumerate(options):
-        # The Logic:
-        # Base offset of 5 spaces + a sine curve that moves up to 4 spaces
-        '''indent_size = int(5 + 4 * math.sin(i * 1.5))'''
         indent_size = 2 if i % 2 == 0 else 5
-
         indent = " " * indent_size
         print(f"{indent}◈ {opt}")
     print("")
@@ -222,7 +218,7 @@ def get_season_multiplier(season):
 
 
 def get_traffic_multiplier(traffic):
-    traffic_multiplier = {"light": 1.0, "normal": 0.9, "Heavy": 0.6}
+    traffic_multiplier = {"light": 1.0, "normal": 0.9, "heavy": 0.6}
     traffic_mult = traffic_multiplier.get(traffic)
     return traffic_mult
 
@@ -319,10 +315,11 @@ def main_menu():
             ai_customer_service()
         elif choice == '4':
             clear_screen()
-            print("Exiting...")
+            print("Exiting system...")
             running = False
         else:
-            print("Unavailable choice.Please try again")
+            clear_screen()
+            input("Invalid choice.\nPress Enter to try again.")
 
 
 if __name__ == "__main__":
