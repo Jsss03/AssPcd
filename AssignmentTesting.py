@@ -3,8 +3,8 @@ import math
 import time
 
 FILENAME = "location.txt"
-default_routes = [["KLCC", "Bangsar Shopping mall", "6.5"],
-                  ["UTAR-SL", "Mid Valley", "25.6"], ["UTAR-SL", "Sunway Pyramid", "30"], ["TARUMT", "Pavillion", "15.2"], ["UTAR-SL", "Sunway Velocity", "20"]]
+default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
+                  ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
 
 
 def sync_defaults():
