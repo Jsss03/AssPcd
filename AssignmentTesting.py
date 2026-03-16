@@ -48,11 +48,8 @@ def add_new_place():
 
     while step <= 3:
         clear_screen()
-        print("\n"+'='*20)
-        print("ADMIN: ADD PLACE")
-        print("="*20)
-        print("(q:Quit | b: Back to previous)")
-        print("="*20)
+        print("---ADD PLACE---")
+        print("(<q>uit | <b>ack)")
 
         if step == 1:
             loc_from = input("Enter 'From' Location: ")
@@ -94,7 +91,7 @@ def remove_location():
         print("No routes to delete.")
         return
 
-    print("\n--- REMOVE ROUTE ---")
+    print("--- REMOVE ROUTE ---")
     for i, row in enumerate(matrix):
         print(f"{i+1}. {row[0]} to {row[1]}")
 
@@ -135,15 +132,18 @@ def admin_management():
 
         choice = input("\nPlease choose 1-4 >> ")
         if choice == '1':
+            clear_screen()
             matrix = load_matrix()
-            print(f"\n{'Start':<15} | {'Destination':<25} | {'Dist (KM)'}")
-            print("-" * 55)
+            print(f"{'Departure':<25} | {'Destination':<25} | {'Distance (KM)'}")
+            print("-" * 70)
             for row in matrix:
-                print(f"{row[0]:<15} | {row[1]:<25} | {row[2]}")
+                print(f"{row[0]:<25} | {row[1]:<25} | {row[2]}")
             input("\nPress Enter to continue...")
         elif choice == '2':
+            clear_screen()
             add_new_place()
         elif choice == '3':
+            clear_screen()
             remove_location()
 
         elif choice == '4':
@@ -166,7 +166,7 @@ def wave_menu():
     options = ["1.Admin", "2.Estimate", "3.Help Centre", "4.Exit"]
 
     # 1. Display the Title (Stationary)
-    print(f"\n{'='*60}")
+    print(f"{'='*60}")
     print(f"{title:^60}")
     print(f"{'='*60}\n")
 
