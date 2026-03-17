@@ -2,7 +2,8 @@ import os
 import math
 import time
 
-FILENAME = "location.txt"
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
+FILENAME = os.path.join(BASE_DIR,"location.txt")
 default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
                   ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
 
@@ -107,7 +108,7 @@ def add_new_place():
     new_entry = f"{loc_from}|{loc_to}|{loc_distance}\n"
     with open(FILENAME, "a")as f:
         f.write(new_entry)
-    print("\n--- Data succesfully saved to " + FILENAME+"---")
+    input("\n--- Data succesfully saved to " + FILENAME+"---")
 
 
 def remove_location():
