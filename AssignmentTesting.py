@@ -47,22 +47,17 @@ def add_new_place():
     distance = ""
 
     while step <= 4:
-        clear_screen()
-        print("---ADD LOCATION---")
-        print("(<q>uit | <b>ack)")
-
         if step == 1:
-            loc_from = input("Enter 'From' Location: ")
-            if loc_from.lower() == 'q' or loc_from.lower() == 'b':
+            loc_from = input("\nEnter 'From' Location: ")
+            if loc_from.upper() == 'B' or loc_from.upper() == 'Q':
                 return
             step = 2
 
         elif step == 2:
-            print(f"From: {loc_from}")
             loc_to = input("Enter 'To' Location: ")
-            if loc_to.lower() == 'q':
+            if loc_to.upper() == 'Q':
                 return
-            if loc_to.lower() == 'b':
+            if loc_to.upper() == 'B':
                 step = 1
                 continue
             matrix=load_matrix()
@@ -79,12 +74,10 @@ def add_new_place():
             step = 3
 
         elif step == 3:
-            print(f"From: {loc_from}")
-            print(f"To: {loc_to}")
             loc_distance = input("Enter Distance (km): ")
-            if loc_distance.lower() == 'q':
+            if loc_distance.upper() == 'Q':
                 return
-            if loc_distance.lower() == 'b':
+            if loc_distance.upper() == 'B':
                 step = 2
                 continue
             try:
@@ -93,11 +86,22 @@ def add_new_place():
             except:
                 input("Opps Error!Please Try Again!")
         elif step==4:
-            print(f"From: {loc_from}")
-            print(f"To: {loc_to}")
-            print(f"Distance:{loc_distance}")
-            input("Press Enter to confirm location")
-            step=5
+            clear_screen()
+            print("--- Route Confirmation ---")
+            print(f"From     : {loc_from}")
+            print(f"To       : {loc_to}")
+            print(f"Distance : {loc_distance} km")
+            confirmation=input("\n<C>onfirm     <B>ack     <Q>uit\n").upper()
+            if confirmation=="C":
+                step=5
+            elif confirmation=="B":
+                step=3
+            elif confirmation=="Q":
+                return
+            else:
+                print("Invalid.Plaese try again!")
+                step=4
+
             
 
     new_entry = f"{loc_from}|{loc_to}|{loc_distance}\n"
@@ -117,9 +121,9 @@ def remove_location():
     for i, row in enumerate(matrix):
         print(f"{i+1}. {row[0]} to {row[1]}")
 
-    choice = input("\nSelect number to delete (or 'q' to cancel): ")
+    choice = input("\nSelect number to delete (<Q>uit): ")
 
-    if choice.lower() == 'q':
+    if choice.upper() == 'Q':
         return
 
     try:
@@ -148,27 +152,29 @@ def admin_management():
         clear_screen()
         print("--- ADMIN MANAGEMENT ---")
         print("1. View Current Routes")
-        print("2. Add New Places")
-        print("3. Remove Existing Places")
-        print("4. Return to Main Menu")
+        print("2. Return to Main Menu")
 
-        choice = input("\nPlease choose 1-4 >> ")
-        if choice == '1':
+        choice = input("\nPlease choose 1-2 >> ")
+        while choice == '1':
             clear_screen()
             matrix = load_matrix()
             print(f"{'Departure':<25} | {'Destination':<25} | {'Distance (KM)'}")
             print("-" * 70)
             for row in matrix:
                 print(f"{row[0]:<25} | {row[1]:<25} | {row[2]}")
-            input("\nPress Enter to continue...")
-        elif choice == '2':
-            clear_screen()
-            add_new_place()
-        elif choice == '3':
-            clear_screen()
-            remove_location()
-
-        elif choice == '4':
+            opt=input("\n<A>dd     <D>elete     <B>ack\n\nPlease enter next insturction>> ").upper()
+            if opt=="A":
+                clear_screen()
+                print("---ADD LOCATION---")
+                print("\n<Q>uit     <B>ack")
+                add_new_place()
+            elif opt=="D":
+                clear_screen()
+                remove_location()
+            elif opt=="B":
+                clear_screen()
+                break
+        if choice == '2':
             clear_screen()
             break
 
@@ -227,8 +233,7 @@ def get_distance_from_file(FILENAME):
 
 
 def get_time_multiplier(timing):
-    time_multiplier = {"morning": 0.75,
-                       "afternoon": 1.0, "evening": 0.7, "night": 1.15}
+    time_multiplier = {"morning": 0.85,"afternoon": 1.0, "evening": 0.7, "night": 1.15}
     time_mult = time_multiplier.get(timing)
     return time_mult
 
@@ -260,13 +265,31 @@ def calculate_adjusted_speed():
     season_mult = get_season_multiplier(season)
     traffic = input("Enter traffic>>")
     traffic_mult = get_traffic_multiplier(traffic)
-    adjusted_speed = base_speed * time_mult*season_mult*traffic_mult
+    if transport == "walking" or transport=="bicycle":
+        adjusted_speed=base_speed
+    else:
+        adjusted_speed = base_speed * time_mult*season_mult*traffic_mult
     return adjusted_speed
 
 
 def get_distance():
-    distance = get_distance_from_file(FILENAME)
+    distance = float(get_distance_from_file(FILENAME))
+    return distance
 
+def cal_esTime(adjusted_speed,distance):
+    esTime=distance/adjusted_speed
+    hour=int(esTime//1)
+    minutes=esTime*60 %60
+    if minutes*100%100>=50:
+        minutes=minutes//1 + 1
+        minutes=int(minutes)
+    else:
+        minutes=int(minutes)
+    if hour==0:
+        print(f"Estimated time : {minutes}minute(s)")
+    else:
+        print(f"Estimated time : {hour}hour(s) {minutes}minute(s)")
+    
 
 def ai_customer_service():
     brain = {"price": "Our travel costs are calculated based on distance. Walking is free!",
@@ -329,7 +352,7 @@ def main_menu():
             clear_screen()
             distance = get_distance_from_file(FILENAME)
             adjusted_speed = float(calculate_adjusted_speed())
-            print(adjusted_speed)
+            cal_esTime(adjusted_speed,distance)
             input("Press any to continue.")
             clear_screen()
         elif choice == '3':
@@ -346,4 +369,3 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
-
