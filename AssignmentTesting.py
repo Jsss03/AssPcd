@@ -48,6 +48,9 @@ def add_new_place():
     distance = ""
 
     while step <= 4:
+        clear_screen()
+        print("---ADD LOCATION---")
+        print("\n<Q>uit     <B>ack")
         if step == 1:
             loc_from = input("\nEnter 'From' Location: ")
             if loc_from.upper() == 'B' or loc_from.upper() == 'Q':
@@ -55,6 +58,7 @@ def add_new_place():
             step = 2
 
         elif step == 2:
+            print(f"From:{loc_from}")
             loc_to = input("Enter 'To' Location: ")
             if loc_to.upper() == 'Q':
                 return
@@ -75,6 +79,8 @@ def add_new_place():
             step = 3
 
         elif step == 3:
+            print(f"From:{loc_from}")
+            print(f"To:{loc_to}")
             loc_distance = input("Enter Distance (km): ")
             if loc_distance.upper() == 'Q':
                 return
@@ -190,6 +196,7 @@ def boot_sequence():
 
 
 def wave_menu():
+    clear_screen()
     title = "MAIN MENU"
     options = ["1.Admin", "2.Estimate", "3.Help Centre", "4.Exit"]
 
