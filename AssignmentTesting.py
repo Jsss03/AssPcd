@@ -103,12 +103,11 @@ def add_new_place():
                 print("Invalid.Plaese try again!")
                 step=4
 
-            
-
     new_entry = f"{loc_from}|{loc_to}|{loc_distance}\n"
     with open(FILENAME, "a")as f:
         f.write(new_entry)
-    input("\n--- Data succesfully saved to " + FILENAME+"---")
+    print("\nNew route added succesfully.")
+    time.sleep(1)
 
 
 def remove_location():
