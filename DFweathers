@@ -39,7 +39,6 @@ def get_weather_dashboard(city="Cheras"):
         cond_text = f"☁ CONDITION: {condition}"
         print(f"  {temp_text:<20} {cond_text}")
         
-        print("=" * 60)
         
 
         return condition
