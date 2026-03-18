@@ -1,88 +1,56 @@
-import os
-import sys
-import subprocess
-import random
+import requests
+from datetime import datetime
 
-# --- 1. AUTO-INSTALLER ---
-# This checks if your friend has the 'requests' library. 
-# If not, it downloads it automatically so the code doesn't crash.
-try:
-    import requests
-except ImportError:
-    print("\n[!] 'requests' library missing. Installing now...")
-    try:
-        # This command runs 'pip install requests' safely from inside Python
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
-        print("[+] Successfully installed. Restarting script...\n")
-        import requests 
-    except Exception as e:
-        print(f"[!] Auto-install failed: {e}")
-        print("[!] Please connect to internet or use Simulated Mode.")
-
-# --- 2. WEATHER DASHBOARD FUNCTION ---
-def get_weather_dashboard(city="Kajang"):
-    """
-    Fetches real-time weather and simplifies it into 5 categories:
-    Sunny, Cloudy, Light Rain, Heavy Rain, or Windy.
-    """
-    # Mapping professional API codes to your 5 simple words
+def get_weather_dashboard(city="Cheras"):
     weather_map = {
-        0: "Sunny", 
-        1: "Cloudy", 2: "Cloudy", 3: "Cloudy",
+        0: "Sunny", 1: "Cloudy", 2: "Cloudy", 3: "Cloudy",
         51: "Light Rain", 61: "Light Rain", 80: "Light Rain",
         65: "Heavy Rain", 82: "Heavy Rain"
     }
+    
+    # Get Current Date and Time
+    now = datetime.now()
+    dt_str = now.strftime("%d-%m-%Y | %H:%M %p")
 
     try:
-        # Step A: Get Coordinates (Latitude & Longitude)
+        # Get Weather (Same logic as before)
         geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1"
         geo_data = requests.get(geo_url, timeout=5).json()
-        
-        if "results" not in geo_data:
-            raise Exception("City not found")
-            
-        lat = geo_data["results"][0]["latitude"]
-        lon = geo_data["results"][0]["longitude"]
+        lat, lon = geo_data["results"][0]["latitude"], geo_data["results"][0]["longitude"]
 
-        # Step B: Get Weather Data using coordinates
         url = "https://api.open-meteo.com/v1/forecast"
-        params = {
-            "latitude": lat, 
-            "longitude": lon, 
-            "current_weather": True, 
-            "windspeed_unit": "kmh"
-        }
+        params = {"latitude": lat, "longitude": lon, "current_weather": True}
         res = requests.get(url, params=params, timeout=5).json()
-
-        # Step C: Extract and Simplify
-        code = res["current_weather"]["weathercode"]
-        wind = res["current_weather"]["windspeed"]
-        temp = res["current_weather"]["temperature"]
         
-        # Logic for your 5 categories
-        if wind > 30:
-            condition = "Windy"
-        else:
-            condition = weather_map.get(code, "Sunny")
+        temp = res["current_weather"]["temperature"]
+        condition = weather_map.get(res["current_weather"]["weathercode"], "Sunny")
 
-        # --- THE OUTPUT BOX ---
-        print("\n" + "═"*60)
-        print(f"  🌍 LIVE STATUS   : {city.upper()}")
-        print(f"  ☁️  CONDITION  : {condition}")
-        print(f"  🌡️  TEMP       : {temp}°C")
+        # --- TWO-COLUMN DASHBOARD ---
+        print("=" * 60)
+        
+        # COLUMN 1: TIME (Left) & LOCATION (Right)
+        # We give the time 30 spaces so the Location always starts at the same spot
+        time_text = f"📅 {dt_str}"
+        city_text = f"📍{city.upper()}"
+        print(f"  {time_text:<30} {city_text}")
+        
+        # COLUMN 2: TEMP (Left) & CONDITION (Right)
+        temp_text = f"🌡 TEMP: {temp}°C"
+        cond_text = f"☁ CONDITION: {condition}"
+        print(f"  {temp_text:<20} {cond_text}")
+        
+        print("=" * 60)
+        
 
         return condition
 
-    except Exception:
-        # Fallback: If internet is blocked, use a random one so the program keeps running
-        sim_conditions = ["Sunny", "Cloudy", "Light Rain"]
-        sim_weather = random.choice(sim_conditions)
-        print("\n[!] Connection Issue: Showing Simulated Weather")
-        print(f"  ☁️  CONDITION  : {sim_weather} (Simulated)")
-        print("-" * 35 + "\n")
-        return sim_weather
+    except:
+        print("="*60)
+        print(f" 📅 {dt_str}   📍 {city.upper()} [OFFLINE]")
+        print("="*60)
+        return "Sunny"
 
 # --- 4. PREVENT AUTO-CLOSE ---
 if __name__ == "__main__":
-    get_weather_dashboard("Cheras")
+    get_weather_dashboard("Kajang")
     input("\nPress Enter to exit...") # <--- ADD THIS LINE!
