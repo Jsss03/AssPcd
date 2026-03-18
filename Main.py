@@ -24,8 +24,7 @@ def main():
             input("Press ANY to continue..")
             has_booted = True
             menu.clear_screen()
-        wt.display_dashboard(weather_storage)
-        menu.wave_menu()
+        menu.wave_menu(weather_storage)
         choice = input("Please choose(1-4)>>")
         if choice == '1':
             menu.clear_screen()
