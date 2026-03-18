@@ -10,17 +10,21 @@ import fileIO as IO
 import DFAdmin as Admin
 import AIcs as cs
 import DFest as est
+import DFweathers as wt
 
 def main():
     running = True
     has_booted = False
+    print("Syncing with weather satellites...")
+    weather_storage=wt.get_weather_data("Cheras")
 
     while running:
         if not has_booted:
             menu.boot_sequence()
             input("Press ANY to continue..")
-            menu.clear_screen()
             has_booted = True
+            menu.clear_screen()
+        wt.display_dashboard(weather_storage)
         menu.wave_menu()
         choice = input("Please choose(1-4)>>")
         if choice == '1':
