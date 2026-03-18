@@ -67,7 +67,7 @@ def get_weather_dashboard(city="Kajang"):
 
         # --- THE OUTPUT BOX ---
         print("\n" + "═"*35)
-        print(f"  🌍 LIVE STATUS: {city.upper()}")
+        print(f"  🌍 LIVE STATUS : {city.upper()}")
         print(f"  ☁️  CONDITION  : {condition}")
         print(f"  🌡️  TEMP       : {temp}°C")
         print("═"*35 + "\n")
