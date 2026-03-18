@@ -61,8 +61,4 @@ def display_dashboard(data):
     # Row 4: Condition
     print(f"{f'☁️  CONDITION: {data['cond']}':^60}")
 
-# --- 4. PREVENT AUTO-CLOSE (For testing alone) ---
-if __name__ == "__main__":
-    test_data = get_weather_data("Cheras")
-    display_dashboard(test_data)
-    input("\nPress Enter to exit...")
+
