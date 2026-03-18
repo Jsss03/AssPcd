@@ -7,6 +7,7 @@
 
 import os
 import time
+import DFweathers as wt
 
 def clear_screen():
     if os.name == 'nt':
@@ -23,19 +24,17 @@ def boot_sequence():
         time.sleep(0.1)
     print("\n\n--- ACCESS GRANTED ---\n")
 
-def wave_menu():
+def wave_menu(data):
+    w_lines=wt.get_dashboard_lines(data)
     title = "MAIN MENU"
     options = ["1.Admin", "2.Estimate", "3.Help Centre", "4.Exit"]
-
-    # 1. Display the Title (Stationary)
-    print(f"{'='*60}")
-    print(f"{title:^60}")
-    print(f"{'='*60}\n")
-
-    # 2. Display the Waving Options
-    for i, opt in enumerate(options):
-        indent_size = 2 if i % 2 == 0 else 5
-        indent = " " * indent_size
-        print(f"{indent}◈ {opt}")
-    print("")
-    print(f"{'='*60}\n")
+    print("=" * 70)
+    print(f"{title:^70}")
+    print("=" * 70)
+    for i in range(4):
+        # weather_line (30 chars) + Gap + Menu Option
+        weather_part = f"{w_lines[i]}"
+        option_part = f"♦ {options[i]:<35}"
+        print(f"{option_part}  {weather_part}")
+    print("=" * 70)
+    
