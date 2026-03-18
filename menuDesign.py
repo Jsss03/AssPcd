@@ -24,7 +24,6 @@ def boot_sequence():
     print("\n\n--- ACCESS GRANTED ---\n")
 
 def wave_menu():
-    clear_screen()
     title = "MAIN MENU"
     options = ["1.Admin", "2.Estimate", "3.Help Centre", "4.Exit"]
 
