@@ -83,7 +83,7 @@ def get_weather_dashboard(city="Kajang"):
         print("-" * 35 + "\n")
         return sim_weather
 
-# --- 3. TEST EXECUTION ---
+# --- 4. PREVENT AUTO-CLOSE ---
 if __name__ == "__main__":
-    # When you run this file, it immediately shows the weather
     get_weather_dashboard("Kajang")
+    input("\nPress Enter to exit...") # <--- ADD THIS LINE!
