@@ -88,7 +88,8 @@ def add_new_place():
                 float(loc_distance)
                 step=4
             except:
-                input("Opps Error!Please Try Again!")
+                print("Opps Error!Please Enter Digit Only!")
+                time.sleep(2)
         elif step==4:
             menu.clear_screen()
             print("--- Route Confirmation ---")
