@@ -66,11 +66,10 @@ def get_weather_dashboard(city="Kajang"):
             condition = weather_map.get(code, "Sunny")
 
         # --- THE OUTPUT BOX ---
-        print("\n" + "═"*35)
+        print("\n" + "═"*60)
         print(f"  🌍 LIVE STATUS   : {city.upper()}")
         print(f"  ☁️  CONDITION  : {condition}")
         print(f"  🌡️  TEMP       : {temp}°C")
-        print("═"*35 + "\n")
 
         return condition
 
@@ -85,5 +84,5 @@ def get_weather_dashboard(city="Kajang"):
 
 # --- 4. PREVENT AUTO-CLOSE ---
 if __name__ == "__main__":
-    get_weather_dashboard("Kajang")
+    get_weather_dashboard("Cheras")
     input("\nPress Enter to exit...") # <--- ADD THIS LINE!
