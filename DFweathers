@@ -46,19 +46,16 @@ def get_weather_data(city="Cheras"):
         return {"temp": "N/A", "cond": "Sunny", "city": city}
 
 # PART 2: The "Printing" part (Run this every time the menu loops)
-def display_dashboard(data):
+def get_dashboard_lines(data):
     now = datetime.now()
     dt_str = now.strftime("%d-%m-%Y | %H:%M %p")
     width = 60
 
-    print("=" * width)
-    # Row 1: Date & Time
-    print(f"{f'📅  {dt_str}':^60}")
-    # Row 2: Location
-    print(f"{f'📍  {data['city'].upper()}':^60}")
-    # Row 3: Temp
-    print(f"{f'🌡️  TEMP: {data['temp']}°C':^60}")
-    # Row 4: Condition
-    print(f"{f'☁️  CONDITION: {data['cond']}':^60}")
+    line1 = f" 📅 {dt_str} "
+    line2 = f" 📍 {data['city'].upper()} "
+    line3 = f" 🌡 TEMP:{data['temp']}°C "
+    line4 = f" ☁ COND:{data['cond'] } "
+    
+    return [line1, line2, line3, line4]
 
 
