@@ -1,43 +1,89 @@
-from datetime import datetime
-
-# Get current system time
-now = datetime.now()
-
-# Format it nicely: Day, Month Date, Year, Time
-print("Current Date/Time:", now.strftime("%A, %B %d, %Y %H:%M %p"))
-
-
-import urllib.request
+import os
+import sys
+import subprocess
 import random
 
-def get_weather_info(city):
+# --- 1. AUTO-INSTALLER ---
+# This checks if your friend has the 'requests' library. 
+# If not, it downloads it automatically so the code doesn't crash.
+try:
+    import requests
+except ImportError:
+    print("\n[!] 'requests' library missing. Installing now...")
     try:
-        # Try real-time internet first
-        url = f"https://wttr.in/{city}?format=%C+%t"
-        with urllib.request.urlopen(url, timeout=3) as response:
-            data = response.read().decode('utf-8')
-            print(f"Live Weather {city}: {data}")
-    except:
-        # If internet fails, use this so the program doesn't stop!
-        print("Weather: [Status Offline] - Using Default Forecast (Sunny 30°C)")
+        # This command runs 'pip install requests' safely from inside Python
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+        print("[+] Successfully installed. Restarting script...\n")
+        import requests 
+    except Exception as e:
+        print(f"[!] Auto-install failed: {e}")
+        print("[!] Please connect to internet or use Simulated Mode.")
 
+# --- 2. WEATHER DASHBOARD FUNCTION ---
+def get_weather_dashboard(city="Kajang"):
+    """
+    Fetches real-time weather and simplifies it into 5 categories:
+    Sunny, Cloudy, Light Rain, Heavy Rain, or Windy.
+    """
+    # Mapping professional API codes to your 5 simple words
+    weather_map = {
+        0: "Sunny", 
+        1: "Cloudy", 2: "Cloudy", 3: "Cloudy",
+        51: "Light Rain", 61: "Light Rain", 80: "Light Rain",
+        65: "Heavy Rain", 82: "Heavy Rain"
+    }
+
+    try:
+        # Step A: Get Coordinates (Latitude & Longitude)
+        geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1"
+        geo_data = requests.get(geo_url, timeout=5).json()
         
+        if "results" not in geo_data:
+            raise Exception("City not found")
+            
+        lat = geo_data["results"][0]["latitude"]
+        lon = geo_data["results"][0]["longitude"]
 
+        # Step B: Get Weather Data using coordinates
+        url = "https://api.open-meteo.com/v1/forecast"
+        params = {
+            "latitude": lat, 
+            "longitude": lon, 
+            "current_weather": True, 
+            "windspeed_unit": "kmh"
+        }
+        res = requests.get(url, params=params, timeout=5).json()
 
-'''def get_weather_info(city):
-    # List of possible conditions
-    conditions = ["Sunny", "Rainy", "Cloudy", "Stormy", "Hazy"]
-    
-    # Generate a random temperature and condition
-    temp = random.randint(24, 34) # Realistic Malaysia temperatures
-    weather = random.choice(conditions)
-    
-    print(f"\nLocation: {city}")
-    print(f"Current Condition: {weather} {temp}°C")
-    
-    # Return the data so your travel program can use it
-    return weather, temp'''
+        # Step C: Extract and Simplify
+        code = res["current_weather"]["weathercode"]
+        wind = res["current_weather"]["windspeed"]
+        temp = res["current_weather"]["temperature"]
+        
+        # Logic for your 5 categories
+        if wind > 30:
+            condition = "Windy"
+        else:
+            condition = weather_map.get(code, "Sunny")
 
-# How to use it:
-#current_weather, current_temp =
-get_weather_info('Cheras')
+        # --- THE OUTPUT BOX ---
+        print("\n" + "═"*35)
+        print(f"  🌍 LIVE STATUS: {city.upper()}")
+        print(f"  ☁️  CONDITION  : {condition}")
+        print(f"  🌡️  TEMP       : {temp}°C")
+        print("═"*35 + "\n")
+
+        return condition
+
+    except Exception:
+        # Fallback: If internet is blocked, use a random one so the program keeps running
+        sim_conditions = ["Sunny", "Cloudy", "Light Rain"]
+        sim_weather = random.choice(sim_conditions)
+        print("\n[!] Connection Issue: Showing Simulated Weather")
+        print(f"  ☁️  CONDITION  : {sim_weather} (Simulated)")
+        print("-" * 35 + "\n")
+        return sim_weather
+
+# --- 3. TEST EXECUTION ---
+if __name__ == "__main__":
+    # When you run this file, it immediately shows the weather
+    get_weather_dashboard("Kajang")
