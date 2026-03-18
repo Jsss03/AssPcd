@@ -1,55 +1,77 @@
-import requests
+from datetime import datetime
+import os
+import sys
+import subprocess
+
+# --- 🚀 AUTO-INSTALLER (Runs only ONCE at startup) ---
+try:
+    import requests
+except ImportError:
+    print("\n[!] 'requests' library missing. Installing now...")
+    try:
+        # sys.executable makes sure it uses the correct Python on the laptop
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "requests"])
+        import requests 
+        print("[+] Installation Successful!\n")
+    except:
+        print("[!] Auto-install failed. Please check internet connection.")
+
 from datetime import datetime
 
-def get_weather_dashboard(city="Cheras"):
+import requests
+# --- YOUR EXISTING FUNCTIONS BELOW ---
+def get_weather_data(city="Cheras"):
+    # (The code you already have in your photo)
+    pass
+
+def display_dashboard(data):
+    # (The code you already have in your photo)
+    pass
+
+# PART 1: The "Internet" part (Run this only once at the very start of main.py)
+def get_weather_data(city="Cheras"):
     weather_map = {
         0: "Sunny", 1: "Cloudy", 2: "Cloudy", 3: "Cloudy",
         51: "Light Rain", 61: "Light Rain", 80: "Light Rain",
         65: "Heavy Rain", 82: "Heavy Rain"
     }
-    
-    # Get Current Date and Time
-    now = datetime.now()
-    dt_str = now.strftime("%d-%m-%Y | %H:%M %p")
-
     try:
-        # Get Weather (Same logic as before)
+        # Get Coordinates
         geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1"
         geo_data = requests.get(geo_url, timeout=5).json()
         lat, lon = geo_data["results"][0]["latitude"], geo_data["results"][0]["longitude"]
 
+        # Get Weather
         url = "https://api.open-meteo.com/v1/forecast"
         params = {"latitude": lat, "longitude": lon, "current_weather": True}
         res = requests.get(url, params=params, timeout=5).json()
-        
+
         temp = res["current_weather"]["temperature"]
         condition = weather_map.get(res["current_weather"]["weathercode"], "Sunny")
 
-        # --- TWO-COLUMN DASHBOARD ---
-        print("=" * 60)
-        
-        # COLUMN 1: TIME (Left) & LOCATION (Right)
-        # We give the time 30 spaces so the Location always starts at the same spot
-        time_text = f"📅 {dt_str}"
-        city_text = f"📍{city.upper()}"
-        print(f"  {time_text:<30} {city_text}")
-        
-        # COLUMN 2: TEMP (Left) & CONDITION (Right)
-        temp_text = f"🌡 TEMP: {temp}°C"
-        cond_text = f"☁ CONDITION: {condition}"
-        print(f"  {temp_text:<20} {cond_text}")
-        
-        
-
-        return condition
-
+        # RETURN a dictionary so main.py can save it
+        return {"temp": temp, "cond": condition, "city": city}
     except:
-        print("="*60)
-        print(f" 📅 {dt_str}   📍 {city.upper()} [OFFLINE]")
-        print("="*60)
-        return "Sunny"
+        return {"temp": "N/A", "cond": "Sunny", "city": city}
 
-# --- 4. PREVENT AUTO-CLOSE ---
+# PART 2: The "Printing" part (Run this every time the menu loops)
+def display_dashboard(data):
+    now = datetime.now()
+    dt_str = now.strftime("%d-%m-%Y | %I:%M %p")
+    width = 60
+
+    print("=" * width)
+    # Row 1: Date & Time
+    print(f"{f'📅  {dt_str}':^60}")
+    # Row 2: Location
+    print(f"{f'📍  {data['city'].upper()}':^60}")
+    # Row 3: Temp
+    print(f"{f'🌡️  TEMP: {data['temp']}°C':^60}")
+    # Row 4: Condition
+    print(f"{f'☁️  CONDITION: {data['cond']}':^60}")
+
+# --- 4. PREVENT AUTO-CLOSE (For testing alone) ---
 if __name__ == "__main__":
-    get_weather_dashboard("Kajang")
-    input("\nPress Enter to exit...") # <--- ADD THIS LINE!
+    test_data = get_weather_data("Kajang")
+    display_dashboard(test_data)
+    input("\nPress Enter to exit...")
