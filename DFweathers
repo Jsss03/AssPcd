@@ -48,7 +48,7 @@ def get_weather_data(city="Cheras"):
 # PART 2: The "Printing" part (Run this every time the menu loops)
 def display_dashboard(data):
     now = datetime.now()
-    dt_str = now.strftime("%d-%m-%Y | %I:%M %p")
+    dt_str = now.strftime("%d-%m-%Y | %H:%M %p")
     width = 60
 
     print("=" * width)
