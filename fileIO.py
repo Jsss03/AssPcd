@@ -112,7 +112,7 @@ def add_new_place():
     print("\nNew route added succesfully.")
     time.sleep(1)
 
-    def remove_location():
+def remove_location():
         matrix = load_matrix()
 
         if not matrix:
