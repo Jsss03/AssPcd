@@ -17,16 +17,7 @@ except ImportError:
         print("[!] Auto-install failed. Please check internet connection.")
 
 from datetime import datetime
-
 import requests
-# --- YOUR EXISTING FUNCTIONS BELOW ---
-def get_weather_data(city="Cheras"):
-    # (The code you already have in your photo)
-    pass
-
-def display_dashboard(data):
-    # (The code you already have in your photo)
-    pass
 
 # PART 1: The "Internet" part (Run this only once at the very start of main.py)
 def get_weather_data(city="Cheras"):
@@ -72,6 +63,6 @@ def display_dashboard(data):
 
 # --- 4. PREVENT AUTO-CLOSE (For testing alone) ---
 if __name__ == "__main__":
-    test_data = get_weather_data("Kajang")
+    test_data = get_weather_data("Cheras")
     display_dashboard(test_data)
     input("\nPress Enter to exit...")
