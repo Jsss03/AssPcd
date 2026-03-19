@@ -34,7 +34,29 @@ def load_matrix():
                 if line.strip():
                     matrix.append(line.strip().split("|"))
     return matrix
+  '''
+def save_to_history(loc_from, loc_to, distance):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open(HISTORY_FILE, "a") as f:
+        f.write(f"{timestamp}|{loc_from}|{loc_to}|{distance}\n")
 
+def view_history():
+    menu.clear_screen()
+    print("---  TRAVEL HISTORY ---")
+    if not os.path.exists(HISTORY_FILE):
+        print("No travel history found.")
+        time.sleep(1)
+        return
+    print(f"{'Date/Time':<20} | {'From':<15} | {'To':<15} | {'Dist'}")
+    print("-" * 65)
+    with open(HISTORY_FILE, "r") as f:
+        for line in f:
+            data = line.strip().split("|")
+            if len(data) == 4:
+                ts, f_loc, t_loc, dist = data
+                print(f"{ts:<20} | {f_loc:<15} | {t_loc:<15} | {dist} km")
+    input("\nPress Enter to return...")
+  '''
 
 sync_defaults()
 location_matirx = load_matrix()
@@ -168,3 +190,24 @@ def get_distance_from_file(FILENAME):
     except FileNotFoundError:
         print("Error.File not found!")
         return None
+'''
+ while True:
+        print("1. Add Location")
+        print("2. Remove Location")
+        print("3. Search Distance")
+        print("4. View Travel History") # <--- Add this
+        print("5. Exit")
+    
+        choice = input("Select option: ")
+    
+        if choice == "1":
+            add_new_place()
+        elif choice == "2":
+            remove_location()
+        elif choice == "3":
+            get_distance_from_file(FILENAME)
+        elif choice == "4":
+            view_history() # <--- Call the new function here
+        elif choice == "5":
+            break
+'''
