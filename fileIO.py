@@ -49,12 +49,17 @@ def view_history():
         return
     print(f"{'Date/Time':<20} | {'From':<15} | {'To':<15} | {'Dist'}")
     print("-" * 65)
-    with open(HISTORY_FILE, "r") as f:
-        for line in f:
-            data = line.strip().split("|")
-            if len(data) == 4:
-                ts, f_loc, t_loc, dist = data
-                print(f"{ts:<20} | {f_loc:<15} | {t_loc:<15} | {dist} km")
+    try:
+        with open(HISTORY_FILE, "r") as f:
+            for line in f:
+                # Split the line by the '|' symbol we used to save it
+                data = line.strip().split("|")
+                if len(data) == 4:
+                    ts, f_loc, t_loc, dist = data
+                    # Print it out formatted into columns
+                    print(f"{ts:<20} | {f_loc:<15} | {t_loc:<15} | {dist} km")
+    except Exception as e:
+        print(f"Error reading history: {e}")
     input("\nPress Enter to return...")
   '''
 
