@@ -13,38 +13,39 @@ import DFest as est
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 FILENAME = os.path.join(BASE_DIR,"location.txt")
 HISTORY_FILE=os.path.join(BASE_DIR,"history.txt")
-VEHICLE_FILE = os.path.join(BASE_DIR, "vehicles.txt")
+TRANSPORTATION_FILE = os.path.join(BASE_DIR, "transportation.txt")
 
 default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
                   ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], 
                   ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
-default_vehicles = ["Car|60", "Motorcycle|80", "Bicycle|15", "Walking|5"]
+default_transportation = ["Car|60", "Motorcycle|80", "Bicycle|15", "Walking|5"]
 
-def sync_vehicles():
-    if not os.path.exists(VEHICLE_FILE):
-        with open(VEHICLE_FILE, "w") as f:
-            for v in default_vehicles:
+def sync_transportation():
+    if not os.path.exists(TRANSPORTATION_FILE):
+        with open(TRANSPORTATION_FILE, "w") as f:
+            for v in default_transportation:
                 f.write(v + "\n")
     
-    elif os.stat(VEHICLE_FILE).st_size == 0:
-        with open(VEHICLE_FILE, "a") as f:
-            for v in default_vehicles:
+    elif os.stat(TRANSPORTATION_FILE).st_size == 0:
+        with open(TRANSPORTATION_FILE, "a") as f:
+            for v in default_transportation:
                 f.write(v + "\n")
 
-def load_vehicles():
+def load_transportation():
     vehicle_list = []
-    if os.path.exists(VEHICLE_FILE):
-        with open(VEHICLE_FILE, "r") as f:
+    if os.path.exists(TRANSPORTATION_FILE):
+        with open(TRANSPORTATION_FILE, "r") as f:
             for line in f:
                 if "|" in line:
                     name, speed = line.strip().split("|")
                     vehicle_list.append([name, speed])
     return vehicle_list
 
-def save_vehicles(vehicle_list):
-    with open(VEHICLE_FILE, "w") as f:
-        for v in vehicle_list:
+def save_transportation(transportation_list):
+    with open(TRANSPORTATION_FILE, "w") as f:
+        for v in transportation_list:
             f.write(f"{v[0]}|{v[1]}\n")
+
 def sync_defaults():
     existing_lines = []
     if os.path.exists(FILENAME):
@@ -65,10 +66,6 @@ def load_matrix():
                 if line.strip():
                     matrix.append(line.strip().split("|"))
     return matrix
-
-
-sync_defaults()
-location_matrix = load_matrix()
 
 def add_new_place():
     step = 1
@@ -202,14 +199,16 @@ def get_distance_from_file(FILENAME):
 def manage_vehicles_logic():
     while True:
         menu.clear_screen()
-        vehicles = load_vehicles()
+        print("="*70)
+        print("TRANSPORT MANAGEMENT".center(70))
+        print("="*70)
+        print(f"{'No.':^4} | {'Transport Types':<35} | {'Speed (km/h)'}")
+        print("-"*70)
+        for i, v in enumerate(transportation, 1):
+            print(f"{i:^4} | {v[0]:<35} | {v[1]}")
         
-        print("--- VEHICLE MANAGEMENT ---")
-        for i, v in enumerate(vehicles, 1):
-            print(f"{i:<2} | {v[0]:<12} | {v[1]} km/h")
-        
-        print("\n<A>dd | <E>dit | <D>elete | <B>ack")
-        opt = input("Select instruction >> ").upper()
+        print("\n<A>dd   <E>dit   <D>elete   <B>ack")
+        opt = input("\nPlease select next instruction >> ").upper()
 
         if opt == "A":
             step = 1
@@ -218,58 +217,68 @@ def manage_vehicles_logic():
             
             while step <= 2:
                 menu.clear_screen()
-                print("--- ADD NEW VEHICLE ---")
-                print("<B>ack to Menu")
-                
+                print("ADD NEW TRANSPORTATION".center(70))
+                print(f"{'No.':^4} | {'Transport Types':<35} | {'Speed (km/h)'}")
+                print("-"*70)
+                for i, v in enumerate(transportation, 1):
+                    print(f"{i:^4} | {v[0]:<35} | {v[1]}")
+                print("\n<B>ack")
                 if step == 1:
-                    name = input("\nEnter Vehicle Name: ").capitalize()
+                    name = input("\nEnter new transportation>> ").capitalize()
                     if name.upper() == 'B': break
-                    if any(v[0] == name for v in vehicles):
-                        print(f"[!] {name} already exists!")
+                    if any(v[0] == name for v in transportation):
+                        print(f"{name} already exists!")
                         time.sleep(1.5)
                         continue
                     step = 2
                 
                 elif step == 2:
-                    print(f"Vehicle Name: {name}")
-                    speed = input("Enter Average Speed (km/h): ")
+                    print(f"New transportation: {name}")
+                    speed = input("Enter Average Speed (km/h)>> ")
                     if speed.upper() == 'B':
                         step = 1
                         continue
                     
                     if speed.isdigit():
-                        vehicles.append([name, speed])
-                        save_vehicles(vehicles)
-                        print("\n[+] Database Updated!")
-                        time.sleep(1)
-                        step = 3
+                        print(f"\nNew transportation: {name}\nSpeed: {speed} km/h")
+                        slc=input("\nPlease <C>onfirm or enter ANY to back >> ").upper()
+                        if slc=="C":
+                            transportation.append([name, speed])
+                            save_transportation(transportation)
+                            print("\n[+] Database Updated!")
+                            time.sleep(1)
+                            step = 3
+                        else:
+                            step=2
+                            continue
+                            
                     else:
                         print("Enter digit only!")
                         time.sleep(1.5)
-                        print(f"Vehicle Name: {name}")
+                        print(f"New Transportation: {name}")
                         step=2
 
         elif opt == "E":
             while True:
                 menu.clear_screen()
-                print("--- EDIT VEHICLE SPEED ---")
-                for i, v in enumerate(vehicles, 1):
-                    print(f"{i:<2} | {v[0]:<12} | {v[1]} km/h")
-                
-                idx_in = input("\nSelect No. to edit (or 'B' to back): ")
-                if idx_in.upper() == 'B': break
-                
-                if idx_in.isdigit() and 0 < int(idx_in) <= len(vehicles):
+                print("EDIT TRANSPORTATION".center(70))
+                print(f"{'No.':^4} | {'Transport Types':<35} | {'Speed (km/h)'}")
+                print("-"*70)
+                for i, v in enumerate(transportation, 1):
+                    print(f"{i:^4} | {v[0]:<35} | {v[1]}")
+                idx_in = input("\n<B>ack\n\nSelect No. to edit speed>> ")
+                if idx_in.upper() == 'B': break        
+                if idx_in.isdigit() and 0 < int(idx_in) <= len(transportation):
                     idx = int(idx_in) - 1
                     while True:
                         menu.clear_screen()
-                        print(f"--- UPDATING {vehicles[idx][0].upper()} ---")
-                        new_speed = input(f"Enter New Speed (km/h): ")
+                        print(f"--- UPDATING {transportation[idx][0].upper()} ---")
+                        new_speed = input(f"Enter New Speed (km/h)>> ")
                         
                         if new_speed.isdigit():
-                            vehicles[idx][1] = new_speed
-                            save_vehicles(vehicles)
-                            print("\n[+] Speed Updated!")
+                            transportation[idx][1] = new_speed
+                            save_transportation(transportation)
+                            print("\nSpeed Updated successfully!")
                             time.sleep(1)
                             break
                         else:
@@ -278,11 +287,19 @@ def manage_vehicles_logic():
                     break 
 
         elif opt == "D":
-            idx_in = input("Select No. to delete: ")
-            if idx_in.isdigit() and 0 < int(idx_in) <= len(vehicles):
-                vehicles.pop(int(idx_in) - 1)
-                save_vehicles(vehicles)
-                print("[+] Deleted!")
+            menu.clear_screen()
+            print("DELETE TRANSPORTATION".center(70))
+            print(f"{'No.':^4} | {'Transport Types':<35} | {'Speed (km/h)'}")
+            print("-"*70)
+            for i, v in enumerate(transportation, 1):
+                print(f"{i:^4} | {v[0]:<35} | {v[1]}")
+            idx_in = input("\n<B>ack\n\nSelect No. to delete>> ").upper()
+            if idx_in=="B":
+                continue
+            if idx_in.isdigit() and 0 < int(idx_in) <= len(transportation):
+                transportation.pop(int(idx_in) - 1)
+                save_transportation(transportation)
+                print("Transportation deleted successfully!")
                 time.sleep(1)
 
         elif opt == "B":
@@ -320,3 +337,8 @@ def view_history():
         print(f"Error reading history: {e}")
     input("\nEnter ANY to return...")
   
+  
+sync_defaults()
+sync_transportation()
+location_matrix = load_matrix()
+transportation = load_transportation()
