@@ -31,6 +31,8 @@ def ai_customer_service():
         # GO BACK LOGIC
         if "bye" in user_query or "thank you" in user_query or "thanks" in user_query or "tq" in user_query or "ok" in user_query:
             print("\n[AI]: It was a pleasure helping you. Safe travels!")
+            time.sleep(1.5)
+            menu.clear_screen()
             break
         if user_query == 'b' or user_query == 'back' or user_query == 'exit':
             print("\n[AI]: Returning to Main Menu...")
