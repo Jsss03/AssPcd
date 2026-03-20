@@ -13,11 +13,38 @@ import DFest as est
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 FILENAME = os.path.join(BASE_DIR,"location.txt")
 HISTORY_FILE=os.path.join(BASE_DIR,"history.txt")
+VEHICLE_FILE = os.path.join(BASE_DIR, "vehicles.txt")
 
 default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
                   ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], 
                   ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
+default_vehicles = ["Car|60", "Motorcycle|80", "Bicycle|15", "Walking|5"]
 
+def sync_vehicles():
+    if not os.path.exists(VEHICLE_FILE):
+        with open(VEHICLE_FILE, "w") as f:
+            for v in default_vehicles:
+                f.write(v + "\n")
+    
+    elif os.stat(VEHICLE_FILE).st_size == 0:
+        with open(VEHICLE_FILE, "a") as f:
+            for v in default_vehicles:
+                f.write(v + "\n")
+
+def load_vehicles():
+    vehicle_list = []
+    if os.path.exists(VEHICLE_FILE):
+        with open(VEHICLE_FILE, "r") as f:
+            for line in f:
+                if "|" in line:
+                    name, speed = line.strip().split("|")
+                    vehicle_list.append([name, speed])
+    return vehicle_list
+
+def save_vehicles(vehicle_list):
+    with open(VEHICLE_FILE, "w") as f:
+        for v in vehicle_list:
+            f.write(f"{v[0]}|{v[1]}\n")
 def sync_defaults():
     existing_lines = []
     if os.path.exists(FILENAME):
@@ -172,6 +199,96 @@ def get_distance_from_file(FILENAME):
         print("Error.File not found!")
         return None
 
+def manage_vehicles_logic():
+    while True:
+        menu.clear_screen()
+        vehicles = load_vehicles()
+        
+        print("--- VEHICLE MANAGEMENT ---")
+        for i, v in enumerate(vehicles, 1):
+            print(f"{i:<2} | {v[0]:<12} | {v[1]} km/h")
+        
+        print("\n<A>dd | <E>dit | <D>elete | <B>ack")
+        opt = input("Select instruction >> ").upper()
+
+        if opt == "A":
+            step = 1
+            name = ""
+            speed = ""
+            
+            while step <= 2:
+                menu.clear_screen()
+                print("--- ADD NEW VEHICLE ---")
+                print("<B>ack to Menu")
+                
+                if step == 1:
+                    name = input("\nEnter Vehicle Name: ").capitalize()
+                    if name.upper() == 'B': break
+                    if any(v[0] == name for v in vehicles):
+                        print(f"[!] {name} already exists!")
+                        time.sleep(1.5)
+                        continue
+                    step = 2
+                
+                elif step == 2:
+                    print(f"Vehicle Name: {name}")
+                    speed = input("Enter Average Speed (km/h): ")
+                    if speed.upper() == 'B':
+                        step = 1
+                        continue
+                    
+                    if speed.isdigit():
+                        vehicles.append([name, speed])
+                        save_vehicles(vehicles)
+                        print("\n[+] Database Updated!")
+                        time.sleep(1)
+                        step = 3
+                    else:
+                        print("Enter digit only!")
+                        time.sleep(1.5)
+                        print(f"Vehicle Name: {name}")
+                        step=2
+
+        elif opt == "E":
+            while True:
+                menu.clear_screen()
+                print("--- EDIT VEHICLE SPEED ---")
+                for i, v in enumerate(vehicles, 1):
+                    print(f"{i:<2} | {v[0]:<12} | {v[1]} km/h")
+                
+                idx_in = input("\nSelect No. to edit (or 'B' to back): ")
+                if idx_in.upper() == 'B': break
+                
+                if idx_in.isdigit() and 0 < int(idx_in) <= len(vehicles):
+                    idx = int(idx_in) - 1
+                    while True:
+                        menu.clear_screen()
+                        print(f"--- UPDATING {vehicles[idx][0].upper()} ---")
+                        new_speed = input(f"Enter New Speed (km/h): ")
+                        
+                        if new_speed.isdigit():
+                            vehicles[idx][1] = new_speed
+                            save_vehicles(vehicles)
+                            print("\n[+] Speed Updated!")
+                            time.sleep(1)
+                            break
+                        else:
+                            print("Error!Please Enter digit!")
+                            time.sleep(1.5)
+                    break 
+
+        elif opt == "D":
+            idx_in = input("Select No. to delete: ")
+            if idx_in.isdigit() and 0 < int(idx_in) <= len(vehicles):
+                vehicles.pop(int(idx_in) - 1)
+                save_vehicles(vehicles)
+                print("[+] Deleted!")
+                time.sleep(1)
+
+        elif opt == "B":
+            break
+
+        
 def save_to_history(route_data):
     if route_data is None:
         return None
