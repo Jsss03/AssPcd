@@ -14,8 +14,8 @@ def admin_management():
         menu.clear_screen()
         print("--- ADMIN MANAGEMENT ---")
         print("1. View Current Routes")
-        print("2. View History")
-        print("3. View Vehicle")
+        print("2. View Transportation")
+        print("3. View History")
         print("4. Return to Main Menu")
 
         choice = input("\nPlease choose 1-4 >> ")
@@ -41,10 +41,10 @@ def admin_management():
             elif opt=="B":
                 menu.clear_screen()
                 break
-        if choice == '2':
-            IO.view_history()
-        if choice== '3':
+        if choice== '2':
             IO.manage_vehicles_logic()
+        if choice == '3':
+            IO.view_history()
         if choice == '4':
             menu.clear_screen()
             break
