@@ -13,7 +13,6 @@ import DFest as est
 import DFweathers as wt
 
 def main():
-    IO.sync_vehicles()
     running = True
     has_booted = False
     print("Syncing with weather satellites...")
@@ -33,10 +32,14 @@ def main():
         elif choice == '2':
             menu.clear_screen()
             route_data=est.select_route()
+            trans_data=est.select_transportation()
             if route_data is None:
                 menu.clear_screen()
                 continue
-            est.cal_esTime(route_data)
+            if trans_data is None:
+                menu.clear_screen()
+                continue
+            est.cal_esTime(route_data,trans_data)
         elif choice == '3':
             menu.clear_screen()
             cs.ai_customer_service()
