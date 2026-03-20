@@ -107,5 +107,5 @@ def cal_esTime():
         print(f"Estimated time : {minutes}minute(s)")
     else:
         print(f"Estimated time : {hour}hour(s) {minutes}minute(s)")
-    input("Press any to continue.")
+    input("\nEnter any to continue.")
     menu.clear_screen()
