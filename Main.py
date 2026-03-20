@@ -31,7 +31,11 @@ def main():
             Admin.admin_management()
         elif choice == '2':
             menu.clear_screen()
-            est.cal_esTime()
+            route_data=est.select_route()
+            if route_data is None:
+                menu.clear_screen()
+                continue
+            est.cal_esTime(route_data)
         elif choice == '3':
             menu.clear_screen()
             cs.ai_customer_service()
