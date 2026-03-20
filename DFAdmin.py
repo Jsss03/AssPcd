@@ -14,10 +14,11 @@ def admin_management():
         menu.clear_screen()
         print("--- ADMIN MANAGEMENT ---")
         print("1. View Current Routes")
-        print("2. View history")
-        print("3. Return to Main Menu")
+        print("2. View History")
+        print("3. View Vehicle")
+        print("4. Return to Main Menu")
 
-        choice = input("\nPlease choose 1-3 >> ")
+        choice = input("\nPlease choose 1-4 >> ")
         while choice == '1':
             menu.clear_screen()
             matrix = IO.load_matrix()
@@ -42,7 +43,9 @@ def admin_management():
                 break
         if choice == '2':
             IO.view_history()
-        if choice == '3':
+        if choice== '3':
+            IO.manage_vehicles_logic()
+        if choice == '4':
             menu.clear_screen()
             break
     
