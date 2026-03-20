@@ -21,6 +21,9 @@ def admin_management():
         while choice == '1':
             menu.clear_screen()
             matrix = IO.load_matrix()
+            print("=" * 70)
+            print("CURRENT ROUTES".center(70))
+            print("=" * 70)
             print(f"{'Departure':<25} | {'Destination':<25} | {'Distance (KM)'}")
             print("-" * 70)
             for row in matrix:
