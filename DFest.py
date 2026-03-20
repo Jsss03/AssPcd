@@ -28,7 +28,7 @@ def select_route():
         route_idx=int(choice) -1
         selected_route=IO.location_matrix[route_idx]
         distance=float(selected_route[2])
-        return distance
+        return selected_route
     except (ValueError,IndexError):
         print("Invalid selection! Please try again.")
         time.sleep(3)
@@ -88,12 +88,8 @@ def calculate_adjusted_speed():
         adjusted_speed = base_speed * time_mult*season_mult*traffic_mult
     return adjusted_speed
 
-def cal_esTime():
-    distance=select_route()
-    if distance==None:
-        menu.clear_screen()
-        return None
-    menu.clear_screen()
+def cal_esTime(route_data):
+    distance=float(route_data[2])
     adjusted_speed = float(calculate_adjusted_speed())
     esTime=distance/adjusted_speed
     hour=int(esTime//1)
@@ -108,4 +104,5 @@ def cal_esTime():
     else:
         print(f"Estimated time : {hour}hour(s) {minutes}minute(s)")
     input("\nEnter any to continue.")
+    IO.save_to_history(route_data)
     menu.clear_screen()
