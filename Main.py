@@ -13,6 +13,7 @@ import DFest as est
 import DFweathers as wt
 
 def main():
+    IO.sync_vehicles()
     running = True
     has_booted = False
     print("Syncing with weather satellites...")
