@@ -24,7 +24,7 @@ def main():
             input("Press ANY to continue..")
             has_booted = True
             menu.clear_screen()
-        menu.wave_menu(weather_storage)
+        menu.main_menu(weather_storage)
         choice = input("Please choose(1-4)>>")
         if choice == '1':
             menu.clear_screen()
@@ -32,8 +32,6 @@ def main():
         elif choice == '2':
             menu.clear_screen()
             est.cal_esTime()
-            input("Press any to continue.")
-            menu.clear_screen()
         elif choice == '3':
             menu.clear_screen()
             cs.ai_customer_service()
