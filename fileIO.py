@@ -8,12 +8,16 @@
 import os
 import time
 import menuDesign as menu
+import DFest as est
 
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 FILENAME = os.path.join(BASE_DIR,"location.txt")
+HISTORY_FILE=os.path.join(BASE_DIR,"history.txt")
+
 default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
-                  ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
-HISTORY_FILE=("history.txt")
+                  ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], 
+                  ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
+
 def sync_defaults():
     existing_lines = []
     if os.path.exists(FILENAME):
@@ -37,7 +41,7 @@ def load_matrix():
 
 
 sync_defaults()
-location_matirx = load_matrix()
+location_matrix = load_matrix()
 
 def add_new_place():
     step = 1
@@ -109,18 +113,18 @@ def add_new_place():
     new_entry = f"{loc_from}|{loc_to}|{loc_distance}\n"
     with open(FILENAME, "a")as f:
         f.write(new_entry)
+    location_matrix.append([loc_from,loc_to,loc_distance])
     print("\nNew route added succesfully.")
     time.sleep(1)
 
 def remove_location():
-        matrix = load_matrix()
-
-        if not matrix:
+        global location_matrix
+        if not location_matrix:
             print("No routes to delete.")
             return
 
         print("--- REMOVE ROUTE ---")
-        for i, row in enumerate(matrix):
+        for i, row in enumerate(location_matrix):
             print(f"{i+1}. {row[0]} to {row[1]}")
 
         choice = input("\nSelect number to delete (<Q>uit): ")
@@ -130,12 +134,12 @@ def remove_location():
 
         try:
             idx = int(choice) - 1
-            if 0 <= idx < len(matrix):
+            if 0 <= idx < len(location_matrix):
                 # Remove from the list
-                removed = matrix.pop(idx)
+                removed = location_matrix.pop(idx)
                 # OVERWRITE the file with the new list (using "w")
                 with open(FILENAME, "w") as f:
-                    for row in matrix:
+                    for row in location_matrix:
                         f.write("|".join(row) + "\n")
                     print(f"Successfully deleted: {removed[0]} to {removed[1]}")
             else:
@@ -168,20 +172,24 @@ def get_distance_from_file(FILENAME):
         print("Error.File not found!")
         return None
 
-def save_to_history(loc_from, loc_to, distance):
+def save_to_history(route_data):
+    if route_data is None:
+        return None
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
     with open(HISTORY_FILE, "a") as f:
-        f.write(f"{timestamp}|{loc_from}|{loc_to}|{distance}\n")
+        f.write(f"{timestamp}|{route_data[0]}|{route_data[1]}|{route_data[2]}\n")
 
 def view_history():
     menu.clear_screen()
-    print("---  TRAVEL HISTORY ---")
+    print("="*80)
+    print("TRAVELLING ESTIMATION HISTORY".center(80))
+    print("="*80)
     if not os.path.exists(HISTORY_FILE):
         print("No file history found.")
         time.sleep(2)
         return
-    print(f"{'Date/Time':<20} | {'From':<15} | {'To':<15} | {'Dist'}")
-    print("-" * 65)
+    print(f"{'Date/Time':<25} | {'Departure':<25} | {'Destination':<25}")
+    print("-" * 80)
     try:
         with open(HISTORY_FILE, "r") as f:
             for line in f:
@@ -190,8 +198,8 @@ def view_history():
                 if len(data) == 4:
                     ts, f_loc, t_loc, dist = data
                     # Print it out formatted into columns
-                    print(f"{ts:<20} | {f_loc:<15} | {t_loc:<15} | {dist} km")
+                    print(f"{ts:<25} | {f_loc:<25} | {t_loc:<25}")
     except Exception as e:
         print(f"Error reading history: {e}")
-    input("\nPress Enter to return...")
+    input("\nEnter ANY to return...")
   
