@@ -34,6 +34,32 @@ def select_route():
         time.sleep(3)
         return None
 
+def select_transportation():
+    menu.clear_screen()
+    print("=" * 70)
+    print("Available transportation".center(70))
+    print("=" * 70)
+    print(f"{'No.':^4} | {'Transport types'}")
+    print("-" * 70)
+
+    for i,type in enumerate(IO.transportation,start=1):
+        print(f"{i:^4} | {type[0]:<25}")
+    try:
+        choice=input("\n<B>ack\nPlease select transportation type >> ").upper()
+        if choice =='B':
+            return None
+        idx=int(choice) -1
+        transportation_lst=IO.transportation[idx]
+        transportation_type=transportation_lst[0]
+        base_speed=float(transportation_lst[1])
+        return transportation_type,base_speed
+
+        return base_speed
+    except (ValueError,IndexError):
+        print("Invalid selection! Please try again.")
+        time.sleep(3)
+        return None
+
 
 def get_time_multiplier(timing):
     time_multiplier = {"morning": 0.75,"afternoon": 1.0, "evening peak": 0.7, "night": 1.15, "other":2.0}
@@ -57,12 +83,6 @@ def get_traffic_multiplier():
     random.seed()
     return status,traffic_mult
 
-
-def get_base_speed(transport):
-    transport_modes = {"walking": 5, "bicycle": 15, "car": 60, "bus": 40}
-    base_speed = transport_modes.get(transport)
-    return base_speed
-
 def analyse_timing():
     nowHH=datetime.now().hour
     time_map=[(7,9,"morning"),(12,14,"afternoon"),
@@ -73,24 +93,27 @@ def analyse_timing():
     return "other"
 
 
-def calculate_adjusted_speed():
-    transport = input("Enter transport>>")
-    base_speed = get_base_speed(transport)
+def calculate_adjusted_speed(trans_data):
+    transportation_type,base_speed = trans_data
     timing=analyse_timing()
     time_mult = get_time_multiplier(timing)
     season = input("Enter season>>")
     season_mult = get_season_multiplier(season)
     status,traffic_mult = get_traffic_multiplier()
-    print(f"Transport type: {transport} \nTime of day : {timing} \nTraffic condition : {status}")
-    if transport == "walking" or transport=="bicycle":
+    menu.clear_screen()
+    print(f"Transportation type: {transportation_type} \nTime of day : {timing} \nTraffic condition : {status}")
+    if transportation_type == "Walking" or transportation_type =="Bicycle":
         adjusted_speed=base_speed
     else:
         adjusted_speed = base_speed * time_mult*season_mult*traffic_mult
     return adjusted_speed
 
-def cal_esTime(route_data):
+def cal_esTime(route_data,trans_data):
     distance=float(route_data[2])
-    adjusted_speed = float(calculate_adjusted_speed())
+    adjusted_speed = calculate_adjusted_speed(trans_data)
+    if adjusted_speed is None:
+        return
+    adjusted_speed=float(adjusted_speed)
     esTime=distance/adjusted_speed
     hour=int(esTime//1)
     minutes=esTime*60 %60
@@ -99,10 +122,8 @@ def cal_esTime(route_data):
         minutes=int(minutes)
     else:
         minutes=int(minutes)
-    if hour==0:
-        print(f"Estimated time : {minutes}minute(s)")
-    else:
-        print(f"Estimated time : {hour}hour(s) {minutes}minute(s)")
+    hh_text= hour>0 and f"{hour}hour(s) " or ""
+    print(f"Estimated time : {hh_text}{minutes} minute(s)")
     input("\nEnter any to continue.")
     IO.save_to_history(route_data)
     menu.clear_screen()
