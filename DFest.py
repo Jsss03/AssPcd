@@ -6,9 +6,37 @@
 #amendment:
 
 import fileIO as IO
+import menuDesign as menu
+from datetime import datetime
+import random
+import time
+
+def select_route():
+    print("=" * 80)
+    print("Applicable routes".center(80))
+    print("=" * 80)
+    print(f"{'No.':^4} | {'Departure':<25} | {'Destination':<25} | {'Distance (KM)'}")
+    print("-" * 80)
+
+    for i,route in enumerate(IO.location_matrix,start=1):
+        print(f"{i:^4} | {route[0]:<25} | {route[1]:<25} | {route[2]}")
+
+    try:
+        choice=input("\n<B>ack\nPlease select route number>> ").upper()
+        if choice =='B':
+            return None
+        route_idx=int(choice) -1
+        selected_route=IO.location_matrix[route_idx]
+        distance=float(selected_route[2])
+        return distance
+    except (ValueError,IndexError):
+        print("Invalid selection! Please try again.")
+        time.sleep(3)
+        return None
+
 
 def get_time_multiplier(timing):
-    time_multiplier = {"morning": 0.85,"afternoon": 1.0, "evening": 0.7, "night": 1.15}
+    time_multiplier = {"morning": 0.75,"afternoon": 1.0, "evening peak": 0.7, "night": 1.15, "other":2.0}
     time_mult = time_multiplier.get(timing)
     return time_mult
 
@@ -19,10 +47,15 @@ def get_season_multiplier(season):
     return season_mult
 
 
-def get_traffic_multiplier(traffic):
-    traffic_multiplier = {"light": 1.0, "normal": 0.9, "heavy": 0.6}
-    traffic_mult = traffic_multiplier.get(traffic)
-    return traffic_mult
+def get_traffic_multiplier():
+    now=datetime.now()
+    seed_value=f"{now.date()}-{now.hour}-{now.minute//10}"
+    random.seed(seed_value)
+    conditions = {"light": 1.2, "normal": 1.0, "heavy": 0.5}
+    status=random.choice(list(conditions.keys()))
+    traffic_mult = conditions[status]
+    random.seed()
+    return status,traffic_mult
 
 
 def get_base_speed(transport):
@@ -30,16 +63,25 @@ def get_base_speed(transport):
     base_speed = transport_modes.get(transport)
     return base_speed
 
+def analyse_timing():
+    nowHH=datetime.now().hour
+    time_map=[(7,9,"morning"),(12,14,"afternoon"),
+              (17,20,"evening peak"),(21,23,"night"),(0,6,"night")]
+    for start,end,label in time_map:
+        if start <= nowHH < end:
+            return label
+    return "other"
+
 
 def calculate_adjusted_speed():
     transport = input("Enter transport>>")
     base_speed = get_base_speed(transport)
-    timing = input("Enter timing>>")
+    timing=analyse_timing()
     time_mult = get_time_multiplier(timing)
     season = input("Enter season>>")
     season_mult = get_season_multiplier(season)
-    traffic = input("Enter traffic>>")
-    traffic_mult = get_traffic_multiplier(traffic)
+    status,traffic_mult = get_traffic_multiplier()
+    print(f"Transport type: {transport} \nTime of day : {timing} \nTraffic condition : {status}")
     if transport == "walking" or transport=="bicycle":
         adjusted_speed=base_speed
     else:
@@ -47,7 +89,11 @@ def calculate_adjusted_speed():
     return adjusted_speed
 
 def cal_esTime():
-    distance = IO.get_distance_from_file(IO.FILENAME)
+    distance=select_route()
+    if distance==None:
+        menu.clear_screen()
+        return None
+    menu.clear_screen()
     adjusted_speed = float(calculate_adjusted_speed())
     esTime=distance/adjusted_speed
     hour=int(esTime//1)
@@ -61,3 +107,5 @@ def cal_esTime():
         print(f"Estimated time : {minutes}minute(s)")
     else:
         print(f"Estimated time : {hour}hour(s) {minutes}minute(s)")
+    input("Press any to continue.")
+    menu.clear_screen()
