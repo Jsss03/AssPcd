@@ -238,8 +238,8 @@ def manage_vehicles_logic():
                     if speed.upper() == 'B':
                         step = 1
                         continue
-                    
-                    if speed.isdigit():
+                    try:
+                        speed=float(speed)
                         print(f"\nNew transportation: {name}\nSpeed: {speed} km/h")
                         slc=input("\nPlease <C>onfirm or enter ANY to back >> ").upper()
                         if slc=="C":
@@ -250,14 +250,10 @@ def manage_vehicles_logic():
                             step = 3
                         else:
                             step=2
-                            continue
-                            
-                    else:
+                    except:
                         print("Enter digit only!")
                         time.sleep(1.5)
-                        print(f"New Transportation: {name}")
                         step=2
-
         elif opt == "E":
             while True:
                 menu.clear_screen()
@@ -274,17 +270,20 @@ def manage_vehicles_logic():
                         menu.clear_screen()
                         print(f"--- UPDATING {transportation[idx][0].upper()} ---")
                         new_speed = input(f"Enter New Speed (km/h)>> ")
-                        
-                        if new_speed.isdigit():
-                            transportation[idx][1] = new_speed
-                            save_transportation(transportation)
-                            print("\nSpeed Updated successfully!")
-                            time.sleep(1)
-                            break
-                        else:
-                            print("Error!Please Enter digit!")
+                        try:
+                            new_speed=float(new_speed)
+                            slc=input("\nPlease <C>onfirm or enter ANY to back >> ").upper()
+                            if slc=="C":
+                                transportation[idx][1] = new_speed
+                                save_transportation(transportation)
+                                print("\nSpeed Updated successfully!")
+                                time.sleep(1)
+                                break
+                            else:
+                                continue
+                        except:
+                            print("Enter digit only!")
                             time.sleep(1.5)
-                    break 
 
         elif opt == "D":
             menu.clear_screen()
