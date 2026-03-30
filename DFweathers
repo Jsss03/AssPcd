@@ -1,3 +1,10 @@
+#modeule  : fileIO.py
+#auther   : LING KS's students
+#date     : 16-03-2026
+#purpose  : perform file input/output 
+#import   : os(system),dateime,subprocess
+#amendment:
+
 from datetime import datetime
 import os
 import sys
