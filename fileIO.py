@@ -19,7 +19,50 @@ default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
                   ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], 
                   ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
 default_transportation = ["Car|60", "Motorcycle|80", "Bicycle|15", "Walking|5"]
+ADMIN_PASSWORD='1234'
 
+def login():
+    while True:                                    
+        menu.clear_screen()
+        print("=" * 70)
+        print("WELCOME TO THE SMART TRAVEL SYSTEM".center(70))
+        print("=" * 70)
+        print("Log in as :")
+        print("  1. Admin")
+        print("  2. Guest")
+        print("  3. Quit")
+        print()
+        choice = input("Enter choice: ").strip()
+
+        if choice == "1":                          
+            # Admin: require password
+            password = input("Enter Admin Password: ").strip()
+
+            if password == ADMIN_PASSWORD:        
+                print("\nAdmin login successful!")
+                time.sleep(1)
+                # FIX: Return the role to the main function
+                menu.clear_screen()
+                return "admin"
+                
+            else:
+                print("\nInvalid password. Returning to login...\n")
+                time.sleep(1.5)
+
+        elif choice == "2":
+            # Guest: proceed to main menu
+            menu.clear_screen()
+            return "guest"
+
+        elif choice == "3":
+            menu.clear_screen()
+            print("Goodbye!")
+            exit()
+
+        else:
+            print("\nInvalid choice. Try again.\n")
+            time.sleep(1)
+            
 def sync_transportation():
     if not os.path.exists(TRANSPORTATION_FILE):
         with open(TRANSPORTATION_FILE, "w") as f:
@@ -254,6 +297,8 @@ def manage_vehicles_logic():
                         print("Enter digit only!")
                         time.sleep(1.5)
                         step=2
+                    
+
         elif opt == "E":
             while True:
                 menu.clear_screen()
@@ -284,6 +329,7 @@ def manage_vehicles_logic():
                         except:
                             print("Enter digit only!")
                             time.sleep(1.5)
+                            
 
         elif opt == "D":
             menu.clear_screen()
