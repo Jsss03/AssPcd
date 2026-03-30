@@ -24,20 +24,23 @@ def boot_sequence():
         time.sleep(0.1)
     print("\n\n--- ACCESS GRANTED ---\n")
 
-def main_menu(data):
+def main_menu(data, role="admin"):
     w_lines=wt.get_dashboard_lines(data)
     title = "MAIN MENU"
-    options = ["1.Admin Management", "2.Estimate travel time", "3.Help Centre", "4.Exit"]
+    # if/else: pick options list based on role
+    if role == "admin":
+        options = ["1.Admin Management", "2.Estimate travel time", "3.Help Centre", "4.Exit"]
+    else:                                          # guest: no Admin Management
+        options = ["1.Estimate travel time", "2.Help Centre", "3.Exit"]
     print("=" * 70)
     print(f"{title:^70}")
     print("=" * 70)
-    for i in range(4):
-        # weather_line (30 chars) + Gap + Menu Option
+    for i in range(len(options)):
         indent=2 if i%2 != 0 else 0
         base_width=50
         spacer=" "*indent
         option_text=f"♦ {options[i]}"
-        weather_text = f"{w_lines[i]}"
+        weather_text = f"{w_lines[i]}" if i < len(w_lines) else ""
         weather_part=f"{weather_text}"
         option_part = f"{spacer}{option_text:<{base_width-indent}}"
         print(f"{option_part}|{weather_part}")
