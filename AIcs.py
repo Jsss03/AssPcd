@@ -24,8 +24,8 @@ def ai_customer_service():
     print("    (Type 'b' to go BACK to Main Menu)")
     print("="*50)
     print("\n[AI]:Hi there! I am your AI assistant. How can I help you?")
-
-    while True:
+    loop=True
+    while loop:
         user_query = input("\n[YOU] >> ").lower()
 
         # GO BACK LOGIC
@@ -33,12 +33,12 @@ def ai_customer_service():
             print("\n[AI]: It was a pleasure helping you. Safe travels!")
             time.sleep(1.5)
             menu.clear_screen()
-            break
+            loop=False
         if user_query == 'b' or user_query == 'back' or user_query == 'exit':
             print("\n[AI]: Returning to Main Menu...")
             time.sleep(0.5)
             menu.clear_screen()
-            break  # This exits the while loop and goes back to your menu
+            loop=False  # This exits the while loop and goes back to your menu
 
         found_match = False
         for keyword in brain:
