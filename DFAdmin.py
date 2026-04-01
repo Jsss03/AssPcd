@@ -18,7 +18,7 @@ def admin_management():
         print("3. View History")
         print("4. Return to Main Menu")
 
-        choice = input("\nPlease choose 1-4 >> ")
+        choice = input("\nPlease enter next instruction >> ")
         while choice == '1':
             menu.clear_screen()
             matrix = IO.load_matrix()
