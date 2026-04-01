@@ -15,7 +15,7 @@ FILENAME = os.path.join(BASE_DIR,"location.txt")
 HISTORY_FILE=os.path.join(BASE_DIR,"history.txt")
 TRANSPORTATION_FILE = os.path.join(BASE_DIR, "transportation.txt")
 
-default_routes = [["KLCC", "Bangsar Shopping mall", "13"],
+default_routes = [["KLCC", "Bangsar Shopping mall", "13.0"],
                   ["UTAR-SL", "Mid Valley", "21.2"], ["UTAR-SL", "Sunway Pyramid", "30.6"], 
                   ["TARUMT", "Pavilion", "12.3"], ["UTAR-SL", "Sunway Velocity", "13.4"]]
 default_transportation = ["Car|60", "Motorcycle|80", "Bicycle|15", "Walking|5"]
@@ -27,12 +27,11 @@ def login():
         print("=" * 70)
         print("WELCOME TO THE SMART TRAVEL SYSTEM".center(70))
         print("=" * 70)
-        print("Log in as :")
-        print("  1. Admin")
-        print("  2. Guest")
-        print("  3. Quit")
-        print()
-        choice = input("Enter choice: ").strip()
+        print("1. Admin")
+        print("2. Guest")
+        print("\n<Q>uit")
+        print("")
+        choice = input("Login as: ").strip().upper()
 
         if choice == "1":                          
             # Admin: require password
@@ -54,7 +53,7 @@ def login():
             menu.clear_screen()
             return "guest"
 
-        elif choice == "3":
+        elif choice == "Q":
             menu.clear_screen()
             print("Goodbye!")
             exit()
@@ -251,7 +250,7 @@ def manage_vehicles_logic():
             print(f"{i:^4} | {v[0]:<35} | {v[1]}")
         
         print("\n<A>dd   <E>dit   <D>elete   <B>ack")
-        opt = input("\nPlease select next instruction >> ").upper()
+        opt = input("\nPlease enter next instruction >> ").upper()
 
         if opt == "A":
             step = 1
