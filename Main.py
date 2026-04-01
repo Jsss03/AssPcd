@@ -27,9 +27,9 @@ def main():
             menu.clear_screen()
         menu.main_menu(weather_storage,role)
         if role == "admin":
-            choice = input("Please choose(1-4)>>")
+            choice = input("Please enter next instruction>> ")
         else:
-            choice = input("Please choose(1-3)>>")
+            choice = input("Please enter next instruction>> ")
 
         if role == "admin":
             # Admin: 4 options
@@ -39,10 +39,10 @@ def main():
             elif choice == '2':
                 menu.clear_screen()
                 route_data = est.select_route()
-                trans_data = est.select_transportation()
                 if route_data is None:
                     menu.clear_screen()
                     continue
+                trans_data = est.select_transportation()
                 if trans_data is None:
                     menu.clear_screen()
                     continue
@@ -63,10 +63,10 @@ def main():
             if choice == '1':
                 menu.clear_screen()
                 route_data = est.select_route()
-                trans_data = est.select_transportation()
                 if route_data is None:
                     menu.clear_screen()
                     continue
+                trans_data = est.select_transportation()
                 if trans_data is None:
                     menu.clear_screen()
                     continue
