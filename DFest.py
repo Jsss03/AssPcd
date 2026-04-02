@@ -2,7 +2,7 @@
 #auther   : LING KS's students
 #date     : 18-03-2026
 #purpose  : perform estimation of time 
-#import   : os(system)
+#import   : fileIO,menuDesign,datetime,random,time,DFweathers,holidays
 #amendment:
 
 import fileIO as IO
@@ -24,7 +24,8 @@ def select_route():
 
         for i,route in enumerate(IO.location_matrix,start=1):
             print(f"{i:^4} | {route[0]:<25} | {route[1]:<25} | {route[2]}")
-        choice=input("\n<B>ack\n\nPlease select route number>> ").upper()
+        print("=" * 80)
+        choice=input("<B>ack\n\nPlease select route number>> ").upper()
         if choice =='B':
             return None
         try:
@@ -51,7 +52,8 @@ def select_transportation():
 
         for i,type in enumerate(IO.transportation,start=1):
             print(f"{i:^4} | {type[0]:<25}")
-        choice=input("\n<B>ack\n\nPlease select transportation type >> ").upper()
+        print("=" * 70)
+        choice=input("<B>ack\n\nPlease select transportation type >> ").upper()
         if choice =='B':
             return None
         try:
@@ -64,8 +66,6 @@ def select_transportation():
             transportation_type=transportation_lst[0]
             base_speed=float(transportation_lst[1])
             return transportation_type,base_speed
-
-            return base_speed
         except (ValueError,IndexError):
             print("Invalid selection! Please try again.")
             time.sleep(1)
@@ -176,6 +176,8 @@ def cal_esTime(route_data,trans_data):
     print("="*70)
     if weather in ["Light Rain","Heavy Rain"] and trans_data[0]in ["Walking","Bicycle"]:
         print(f"{'Please avoid walking or bicycling outdoor while raining!!!':^70}")
+    else:
+        print(f"{'Drive with care, arrive alive!!!':^70}")
     input("\nEnter any to continue.")
     IO.save_to_history(route_data)
     menu.clear_screen()
