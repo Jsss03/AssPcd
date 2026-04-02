@@ -2,7 +2,7 @@
 #auther   : LING KS's students
 #date     : 18-03-2026
 #purpose  : act as main 
-#import   : menuDesign,fileIO,DFAdmin,AIcs,DFest
+#import   : menuDesign,fileIO,DFAdmin,AIcs,DFest,DFweathers
 #amendment:
 
 import menuDesign as menu
@@ -27,9 +27,9 @@ def main():
             menu.clear_screen()
         menu.main_menu(weather_storage,role)
         if role == "admin":
-            choice = input("Please enter next instruction>> ")
+            choice = input("Please enter next instruction (1-4)>> ")
         else:
-            choice = input("Please enter next instruction>> ")
+            choice = input("Please enter next instruction (1-3)>> ")
 
         if role == "admin":
             # Admin: 4 options
@@ -37,16 +37,28 @@ def main():
                 menu.clear_screen()
                 Admin.admin_management()
             elif choice == '2':
-                menu.clear_screen()
-                route_data = est.select_route()
-                if route_data is None:
+                step=1
+                loop=True
+                route_data=None
+                trans_data=None
+                while loop:
                     menu.clear_screen()
-                    continue
-                trans_data = est.select_transportation()
-                if trans_data is None:
-                    menu.clear_screen()
-                    continue
-                est.cal_esTime(route_data, trans_data)
+                    if step==1:
+                        route_data = est.select_route()
+                        if route_data is None:
+                            menu.clear_screen()
+                            loop=False
+                        else:
+                            step=2
+                        
+                    elif step==2:
+                        trans_data = est.select_transportation()
+                        if trans_data is None:
+                            step=1
+                            route_data=None
+                        else:
+                            est.cal_esTime(route_data, trans_data)
+                            loop=False
             elif choice == '3':
                 menu.clear_screen()
                 cs.ai_customer_service()
@@ -55,22 +67,35 @@ def main():
                 print("Exiting system...")
                 running = False
             else:
-                menu.clear_screen()
                 input("Invalid choice.\nPress Enter to try again.")
+                menu.clear_screen()
 
         else:
             # Guest: 3 options (no Admin Management) 
             if choice == '1':
-                menu.clear_screen()
-                route_data = est.select_route()
-                if route_data is None:
+                step=1
+                loop=True
+                route_data=None
+                trans_data=None
+                while loop:
                     menu.clear_screen()
-                    continue
-                trans_data = est.select_transportation()
-                if trans_data is None:
-                    menu.clear_screen()
-                    continue
-                est.cal_esTime(route_data, trans_data)
+                    if step==1:
+                        route_data = est.select_route()
+                        if route_data is None:
+                            menu.clear_screen()
+                            loop=False
+                        else:
+                            step=2
+                        
+                    elif step==2:
+                        trans_data = est.select_transportation()
+                        if trans_data is None:
+                            step=1
+                            route_data=None
+                        else:
+                            est.cal_esTime(route_data, trans_data)
+                            loop=False
+
             elif choice == '2':
                 menu.clear_screen()
                 cs.ai_customer_service()
@@ -79,8 +104,8 @@ def main():
                 print("Exiting system...")
                 running = False
             else:
-                menu.clear_screen()
                 input("Invalid choice.\nPress Enter to try again.")
+                menu.clear_screen()
 
 
 if __name__ == "__main__":
