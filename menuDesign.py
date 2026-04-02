@@ -2,7 +2,7 @@
 #auther   : LING KS's students
 #date     : 18-03-2026
 #purpose  : design and maintain main menu
-#import   : os(system),time
+#import   : os(system),time,DFweathers
 #amendment:
 
 import os
@@ -35,11 +35,12 @@ def main_menu(data, role="admin"):
     print("=" * 70)
     print(f"{title:^70}")
     print("=" * 70)
-    for i in range(len(options)):
+    for i in range(max(len(options),len(w_lines))):
         indent=2 if i%2 != 0 else 0
         base_width=50
         spacer=" "*indent
-        option_text=f"♦ {options[i]}"
+        current_option=options[i] if i< len(options) else ""
+        option_text=f"♦ {current_option}"if current_option else ""
         weather_text = f"{w_lines[i]}" if i < len(w_lines) else ""
         weather_part=f"{weather_text}"
         option_part = f"{spacer}{option_text:<{base_width-indent}}"
