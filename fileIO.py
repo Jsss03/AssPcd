@@ -268,6 +268,7 @@ def remove_location():
         global location_matrix
         if not location_matrix:
             print("No routes to delete.")
+            time.sleep(1)
             return
         while True:
             menu.clear_screen()
