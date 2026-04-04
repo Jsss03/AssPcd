@@ -99,7 +99,9 @@ def get_special_days_multiplier():
         return 0.5,"Friday and also holiday eve"
     elif is_friday and is_holiday :
         return 0.5,"Friday and also holiday"
-    elif is_holiday_eve or is_holiday:
+    elif is_holiday_eve:
+        return 0.8,"Holiday eve"
+    elif is_holiday:
         return 0.8,"Holiday"
     elif is_friday:
         return 0.85,"Friday"
