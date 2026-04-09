@@ -1,5 +1,5 @@
 #modeule  : menuDesign.py
-#auther   : LING KS's students
+#auther   : Group 3
 #date     : 18-03-2026
 #purpose  : design and maintain main menu
 #import   : os(system),time,DFweathers
