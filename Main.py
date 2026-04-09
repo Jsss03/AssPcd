@@ -1,5 +1,5 @@
 #modeule  : Main.py
-#auther   : LING KS's students
+#auther   : Group 3
 #date     : 18-03-2026
 #purpose  : act as main 
 #import   : menuDesign,fileIO,DFAdmin,AIcs,DFest,DFweathers
