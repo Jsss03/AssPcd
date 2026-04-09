@@ -1,5 +1,5 @@
 #modeule  : DFest.py
-#auther   : LING KS's students
+#auther   : Group 3
 #date     : 18-03-2026
 #purpose  : perform estimation of time 
 #import   : fileIO,menuDesign,datetime,random,time,DFweathers,holidays
@@ -129,7 +129,7 @@ def analyse_weather():
     condition=weather["cond"]
     return condition
 
-def calculate_adjusted_speed(trans_data):
+def calculate_adjusted_speed(route_data,trans_data):
     transportation_type,base_speed = trans_data
     timing=analyse_timing()
     time_mult = get_time_multiplier(timing)
@@ -143,6 +143,8 @@ def calculate_adjusted_speed(trans_data):
     print(f"{'Transportation type':^25} : {transportation_type}")
     print(f"{'Time of day':^25} : {timing}")
     print(f"{'Weather':^25} : {weather}")
+    distance=float(route_data[2])
+    print(f"{'Distance':^25} : {distance} KM")
     if transportation_type not in ["Walking","Bicycle"]:
         print(f"{'Traffic condition':^25} : {status}")
         print(f"{'Season':^25} : {special_day_status}")
@@ -154,9 +156,9 @@ def calculate_adjusted_speed(trans_data):
     return adjusted_speed,weather
 
 def cal_esTime(route_data,trans_data):
-    
+    base_speed=trans_data[1]
     distance=float(route_data[2])
-    adjusted_speed,weather = calculate_adjusted_speed(trans_data)
+    adjusted_speed,weather = calculate_adjusted_speed(route_data,trans_data)
     if adjusted_speed is None:
         return
     adjusted_speed=float(adjusted_speed)
@@ -171,6 +173,8 @@ def cal_esTime(route_data,trans_data):
         minutes=int(minutes)
     else:
         minutes=int(minutes)
+    print(f"{'Base Speed':^25} : {base_speed} KM/H")
+    print(f"{'Adjusted Speed':^25} : {adjusted_speed} KM/H")
     print(f"{'Departure time':^25} : {departure_time.strftime("%I:%M %p")}")
     print(f"{'Estimated arrival time':^25} : {arrival_time.strftime("%I:%M %p")}")
     hh_text= hours>0 and f"{hours} hour(s) " or ""
@@ -178,6 +182,8 @@ def cal_esTime(route_data,trans_data):
     print("="*70)
     if weather in ["Light Rain","Heavy Rain"] and trans_data[0]in ["Walking","Bicycle"]:
         print(f"{'Please avoid walking or bicycling outdoor while raining!!!':^70}")
+    elif trans_data[0] in ["Walking","Bicycle"]:
+        print(f"{'Have a very nice nice day!!!':^70}")
     else:
         print(f"{'Drive with care, arrive alive!!!':^70}")
     input("\nEnter any to continue.")
