@@ -1,5 +1,5 @@
 #modeule  : fileIO.py
-#auther   : LING KS's students
+#auther   : Group 3
 #date     : 16-03-2026
 #purpose  : perform file input/output 
 #import   : os(system),time,menuDesign,DFest
