@@ -1,5 +1,5 @@
 #modeule  : DFAdmin.py
-#auther   : LING KS's students
+#auther   : Group 3
 #date     : 18-03-2026
 #purpose  : perform admin management
 #import   : fileIO,menuDesign,time
