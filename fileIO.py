@@ -95,7 +95,7 @@ def sync_defaults():
     if not file_exists or os.stat(FILENAME).st_size == 0:
         with open(FILENAME, "w") as f:
             for route in default_routes:
-                # Use your %7.1f formatting to keep it consistent
+                # Use %7.1f formatting to keep it consistent
                 formatted_dist = "%7.1f" % float(route[2])
                 f.write(f"{route[0]}|{route[1]}|{formatted_dist}\n")
         
@@ -215,7 +215,7 @@ def edit_location():
         
         choice = input("Select No. to edit (<B>ack) >> ").upper()
         if choice == 'B':
-            break
+            return
 
         if choice.isdigit() and 0 < int(choice) <= len(location_matrix):
             idx = int(choice) - 1
@@ -236,17 +236,28 @@ def edit_location():
                 
                 if sub_choice == '1':
                     new_val = input("Enter new Departure: ").strip()
-                    if new_val: current[0] = new_val
+                    if new_val != current[1]:
+                        current[0] = new_val
+                    else:
+                        print("Departure cannot same as Destination. Please try again.")
+                        time.sleep(2)
+                        break
                 elif sub_choice == '2':
                     new_val = input("Enter new Destination: ").strip()
-                    if new_val: current[1] = new_val
+                    if new_val != current[0]:
+                        current[1] = new_val
+                    else:
+                        print("Destination cannot same as Departure. Please try again.")
+                        time.sleep(2)
+                        break
                 elif sub_choice == '3':
                     new_val = input("Enter new Distance: ").strip()
                     try:
                         current[2] = "%7.1f"%float(new_val)
                     except:
                         print("Invalid distance! Must be a number.")
-                        time.sleep(1)
+                        time.sleep(2)
+                        break
                 elif sub_choice == 'B':
                     break
                 else:
@@ -302,7 +313,8 @@ def remove_location():
                 time.sleep(1)
     
 
-            
+'''    
+#useless code as version updated, keeping for sweet memory
 def get_distance_from_file(FILENAME):
     search_from = input("Enter starting location>> ")
     search_to = input("Enter destination>> ")
@@ -325,7 +337,7 @@ def get_distance_from_file(FILENAME):
     except FileNotFoundError:
         print("Error.File not found!")
         return None
-
+'''
 def manage_vehicles_logic():
     while True:
         menu.clear_screen()
