@@ -24,7 +24,7 @@ def boot_sequence():
         time.sleep(0.1)
     print("\n\n--- ACCESS GRANTED ---\n")
 
-def main_menu(data, role="admin"):
+def main_menu(data, role):
     w_lines=wt.get_dashboard_lines(data)
     title = "MAIN MENU"
     # if/else: pick options list based on role
