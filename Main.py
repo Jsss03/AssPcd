@@ -27,12 +27,8 @@ def main():
             menu.clear_screen()
         menu.main_menu(weather_storage,role)
         if role == "admin":
-            choice = input("Please enter next instruction (1-4)>> ")
-        else:
-            choice = input("Please enter next instruction (1-3)>> ")
-
-        if role == "admin":
             # Admin: 4 options
+            choice = input("Please enter next instruction (1-4)>> ")
             if choice == '1':
                 menu.clear_screen()
                 Admin.admin_management()
@@ -72,6 +68,7 @@ def main():
 
         else:
             # Guest: 3 options (no Admin Management) 
+            choice = input("Please enter next instruction (1-3)>> ")
             if choice == '1':
                 step=1
                 loop=True
