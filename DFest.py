@@ -136,6 +136,7 @@ def calculate_adjusted_speed(route_data,trans_data):
     weather = analyse_weather()
     season_mult,special_day_status,weather_mult = get_season_multiplier(weather)
     status,traffic_mult = get_traffic_multiplier()
+    distance=float(route_data[2])
     menu.clear_screen()
     print("="*70)
     print("Travel Time Estimation".center(70))
@@ -143,7 +144,6 @@ def calculate_adjusted_speed(route_data,trans_data):
     print(f"{'Transportation type':^25} : {transportation_type}")
     print(f"{'Time of day':^25} : {timing}")
     print(f"{'Weather':^25} : {weather}")
-    distance=float(route_data[2])
     print(f"{'Distance':^25} : {distance} KM")
     if transportation_type not in ["Walking","Bicycle"]:
         print(f"{'Traffic condition':^25} : {status}")
