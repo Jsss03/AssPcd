@@ -1,5 +1,5 @@
 #modeule  : AIcs.py
-#auther   : LING KS's students
+#auther   : Group #
 #date     : 18-03-2026
 #purpose  : perform ai customer service
 #import   : time, menuDesign
